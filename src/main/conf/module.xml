@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- 
+ Copyright 2015 The ContextModeller Project
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<Module id="${project.name}" class="uk.ac.mdx.ie.contextmodeller.impl.ContextModellerModule" binaryversion="3.3.00.9023" version="${project.version}.9023" schema-level="2" uid="98cec717-0034-4cf5-900d-f1aaf7adf869">
+    <ClassPath>
+        <PathEntry path="lib/${project.artifactId}-${project.version}.jar"/>
+        <PathEntry path="lib/commons-lang3-3.1.jar"/>
+    </ClassPath>
+    <Profiles>
+        <Profile uid="7d711df1-9dde-40b1-9755-b6d12139d078" id="cmodel.entities">
+            <Stereotype name="ContextModel" metaclass="ClassDiagram" is-hidden="false" label="Context Model Stereotype" uid="1bcf9704-3d0c-4634-bb06-cb178cffc8f3">
+                <Icon path="res/icons/Sterotype2_16.png"/>
+                <Image path="res/icons/Sterotype2_16.png"/>
+                <TagTypes/>
+            </Stereotype>
+            <Stereotype name="ContextSource" metaclass="Class" is-hidden="false" label="Context Source Stereotype" uid="0246388c-fd41-44ba-b2f7-d1ae7c6e3aa5">
+                <Icon path="res/icons/source_16.png"/>
+                <Image path="res/icons/source_48.png"/>
+                <TagTypes>
+                    <TagType name="Source_ont" uid="78b5ba35-94de-4e59-95e2-900440a2896f" label="ont" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Source_data" uid="292bb52c-5f78-441f-bf26-3a0af92a1072" label="source" parameter-card="1" is-hidden="true" is-signed="false"/>
+                </TagTypes>
+            </Stereotype>
+            <Stereotype name="ContextRule" metaclass="Class" is-hidden="false" label="Context Rule Stereotype" uid="4447a2c1-c9ff-4b51-a7dd-3dde51bb77bf">
+                <Icon path="res/icons/rule_16.png"/>
+                <Image path="res/icons/rule_48.png"/>
+                <TagTypes>
+                    <TagType name="Rule_method1" uid="67cdf0cb-cc6a-4dae-a2aa-2f3368e8e7bf" label="method1" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_triple1" uid="d05083ac-a74e-4ed3-a4c6-92f0da4a2999" label="triple1" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_methodExpr1" uid="155b6124-27bc-40c1-89ec-93666812b632" label="triple1" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_method2" uid="c454062b-f6a8-47f2-af72-5b7bc5c7ec2a" label="method2" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_triple2" uid="4ffae6a0-4551-487b-b6df-82c54ea4c177" label="triple2" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_methodExpr2" uid="3f5aa194-f8d1-4d3a-b588-8b08815e445b" label="triple1" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_method3" uid="e1b32b01-08f2-4df0-aab1-acb74e85dc53" label="method3" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_triple3" uid="418f4eeb-64cc-42f7-8723-d09ae4e34128" label="triple3" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_methodExpr3" uid="be4cde00-cded-4dd3-80c8-982f6b403070" label="triple1" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Rule_logicalEvals" uid="1510f158-e2fe-4915-92a4-f1c00f0208b3" label="logicaleval" parameter-card="1" is-hidden="true" is-signed="false"/>
+                </TagTypes>
+            </Stereotype>
+            <Stereotype name="ContextState" metaclass="Class" is-hidden="false" label="Context State Stereotype" uid="c442a1c1-66b1-4550-8d09-1f936b96f9bd">
+                <Icon path="res/icons/state_16.png"/>
+                <Image path="res/icons/state_48.png"/>
+                <TagTypes/>
+            </Stereotype>
+            <Stereotype name="ContextSource-Rule-Association" metaclass="Association" is-hidden="false" label="Association" uid="3fa6458d-3406-4516-b695-5a6c14cbbde4">
+                <TagTypes>
+                    <TagType name="SR_every" uid="fe5b8add-fe66-4135-a9d6-62583abe12a1" label="every" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="SR_for" uid="8d7e60a2-5c2e-4d24-876f-41d3028fc3c9" label="for" parameter-card="1" is-hidden="true" is-signed="false"/>
+                </TagTypes>
+            </Stereotype>
+            <Stereotype name="ContextRule-State-Association" metaclass="Association" is-hidden="false" label="Association" uid="26c57096-b939-410c-911c-f668ecf14f20"/>
+            <Stereotype name="ContextState-State-Association" metaclass="Association" is-hidden="false" label="Association" uid="5e0e02e5-1fb4-443c-9c70-2aecfed51439">
+                <TagTypes>
+                    <TagType name="Aggr_type" uid="de33f8a3-95e7-4711-b7bf-a096d2253637" label="type" parameter-card="1" is-hidden="true" is-signed="false"/>
+                </TagTypes>
+            </Stereotype>
+            <MetaclassReference uid="f1bdba4f-9c37-41fd-8a71-3876a40a92a5" metaclass="ModelElement">
+                <TagTypes>
+                    <TagType name="TagName" uid="34891762-3ea3-48a4-aedf-52620bab58d8" label="Name" parameter-card="1" is-hidden="false" is-signed="false"/>
+                </TagTypes>
+            </MetaclassReference>
+            <MetaclassReference uid="d3453b75-abcf-4885-aec0-389ffcdc1ae8" metaclass="ModelElement">
+                <NoteTypes>
+                    <NoteType name="Property" label="Property" is-hidden="false" uid="45f7bc70-707c-4b87-8b52-13abced5f71e"/>
+                </NoteTypes>
+            </MetaclassReference>
+        </Profile>
+    </Profiles>
+    <Gui>
+        <Commands>
+            <Command id="ContextModelDiagram" label="%ContextModelTool.label" tooltip="%ContextModelTool.tooltip" image="res/icons/HelloWorldCommand_16.png" group="%Diagrams.group" modify-model="true" group-image="">
+                <Scope metaclass="ModelTree"/>
+                <Handler class="GenericElementCreationHandler">
+                    <HParameter name="metaclass" value="ClassDiagram"/>
+                    <HParameter name="stereotype" value="ContextModel"/>
+                </Handler>
+            </Command>
+            <Command id="ExportCSPARQL" label="%ExportCSPARQL.label" tooltip="%ExportCSPARQL.tooltip" image="res/icons/HelloWorldCommand_16.png" group="%Actions.group" modify-model="true" group-image="">
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.ExportToCSPARQLCommand"/>
+            </Command>
+            <Command id="ExportUPPAAL" label="%ExportUPPAAL.label" tooltip="%ExportUPPAAL.tooltip" image="res/icons/uppaal_16.png" group="%Actions.group" modify-model="true" group-image="">
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.ExportToCSPARQLCommand"/>
+            </Command>
+            <Command id="ContextSourceCommand" label="%ContextSource.label" tooltip="%ContextSource.tooltip" image="res/icons/source_16.png" group="%Elements.group" modify-model="true" group-image="">
+                <Scope metaclass="Package"/>
+                <Scope metaclass="Class"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.explorer.ContextSourceExplorerCommand"/>
+            </Command>
+            <Command id="ContextRuleCommand" label="%ContextRule.label" tooltip="%ContextRule.tooltip" image="res/icons/rule_16.png" group="%Elements.group" modify-model="true" group-image="">
+                <Scope metaclass="Package"/>
+                <Scope metaclass="Class"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.explorer.ContextRuleExplorerCommand"/>
+            </Command>
+            <Command id="ContextStateCommand" label="%ContextState.label" tooltip="%ContextState.tooltip" image="res/icons/state_16.png" group="%Elements.group" modify-model="true" group-image="">
+                <Scope metaclass="Package"/>
+                <Scope metaclass="Class"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.explorer.ContextStateExplorerCommand"/>
+            </Command>
+        </Commands>
+        <Tools>
+            <Tool id="ContextModelTool" label="%CreateElementDiagramCommandExampleLabel" tooltip="%CreateElementDiagramCommandExampleTooltip" image="res/icons/Stereotype1_16.png">
+                <Scope-source metaclass="ModelTree"/>
+                <Handler class="Box">
+                    <HParameter name="metaclass" value="Class"/>
+                    <HParameter name="stereotype" value="ContextModel"/>
+                </Handler>
+            </Tool>
+            <Tool id="ContextSourceTool" label="%ContextSource.label" tooltip="%ContextSource.tooltip" image="res/icons/source_16.png">
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.diagram.ContextSourceDiagramCommand">
+                    <HParameter name="metaclass" value="Class"/>
+                    <HParameter name="stereotype" value="ContextSource"/>
+                </Handler>
+            </Tool>
+            <Tool id="ContextRuleTool" label="%ContextRule.label" tooltip="%ContextRule.tooltip" image="res/icons/rule_16.png">
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.diagram.ContextRuleDiagramCommand">
+                    <HParameter name="metaclass" value="Class"/>
+                    <HParameter name="sterotype" value="ContextRule"/>
+                </Handler>
+            </Tool>
+            <Tool id="ContextStateTool" label="%ContextState.label" tooltip="%ContextState.tooltip" image="res/icons/state_16.png">
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.diagram.ContextStateDiagramCommand">
+                    <HParameter name="metaclass" value="Class"/>
+                    <HParameter name="sterotype" value="ContextState"/>
+                </Handler>
+            </Tool>
+            <Tool id="ContextAssociationTool" label="%ContextAssociation.label" tooltip="%ContextAssociation.tooltop" image="res/icons/association.png">
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.diagram.UMLAssociationDiagramCommand">
+                    <HParameter name="metaclass" value="AssociationEnd"/>
+                </Handler>
+            </Tool>
+        </Tools>
+        <ContextualMenu>
+            <CommandRef refid="ContextModelDiagram"/>
+            <CommandRef refid="ContextSourceCommand"/>
+            <CommandRef refid="ContextRuleCommand"/>
+            <CommandRef refid="ContextStateCommand"/>
+            <CommandRef refid="ExportCSPARQL"/>
+            <CommandRef refid="ExportUPPAAL"/>
+        </ContextualMenu>
+        <Diagrams>
+            <DiagramType base-diagram="ClassDiagram" stereotype="ContextModel">
+                <Palette keepBasePalette="false">
+                    <ToolRef refid="ContextModelTool" group="Relations"/>
+                    <ToolRef refid="ContextAssociationTool" group="Relations"/>
+                    <ToolRef refid="ContextSourceTool" group="Elements"/>
+                    <ToolRef refid="ContextRuleTool" group="Elements"/>
+                    <ToolRef refid="ContextStateTool" group="Elements"/>
+                </Palette>
+                <Handler class="StandardCustomizer"/>
+            </DiagramType>
+        </Diagrams>
+        <Views>
+            <PropertyPage id="ContextModellerPropertyPage" class="uk.ac.mdx.ie.contextmodeller.properties.ContextModellerPropertyPage" label="%ContextModellerPropertyPage.label" image="res/icons/Sterotype2_16.png"/>
+        </Views>
+    </Gui>
+    <Dependencies/>
+</Module>
