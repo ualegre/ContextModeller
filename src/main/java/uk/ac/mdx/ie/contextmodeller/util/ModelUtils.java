@@ -170,4 +170,58 @@ public class ModelUtils {
 		}
 	}
 
+
+	public static ArrayList<RDFTriple> getRDFTriples(String rdf) {
+		ArrayList<RDFTriple> triples = new ArrayList<>();
+
+		String[] rdfs = rdf.split("\\.");
+
+		for (String triple : rdfs) {
+			triples.add(new RDFTriple(triple));
+		}
+
+		return triples;
+
+	}
+
+	public static RDFTriple getRDFTripleForVar(String rdf, String var) {
+
+		return getRDFTripleForVar(getRDFTriples(rdf), var);
+
+	}
+
+	public static RDFTriple getRDFTripleForVar(ArrayList<RDFTriple> triples, String var) {
+
+		RDFTriple result = null;
+
+		for (RDFTriple triple : triples) {
+			if (triple.containsVariable(var)) {
+				result = triple;
+			}
+		}
+
+		return result;
+
+	}
+
+	public static RDFTriple getRDFTripleForVars(String rdf, String[] var) {
+
+		return getRDFTripleForVars(getRDFTriples(rdf), var);
+
+	}
+
+	public static RDFTriple getRDFTripleForVars(ArrayList<RDFTriple> triples, String[] var) {
+
+		RDFTriple result = null;
+
+		for (RDFTriple triple : triples) {
+			if (triple.containsVariables(var)) {
+				result = triple;
+			}
+		}
+
+		return result;
+
+	}
+
 }

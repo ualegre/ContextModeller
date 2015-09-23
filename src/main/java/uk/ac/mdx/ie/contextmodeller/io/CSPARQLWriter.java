@@ -17,16 +17,20 @@
 package uk.ac.mdx.ie.contextmodeller.io;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.EList;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
+import org.modelio.metamodel.uml.statik.Association;
 import org.modelio.metamodel.uml.statik.AssociationEnd;
 import org.modelio.metamodel.uml.statik.Class;
 import org.modelio.metamodel.uml.statik.Package;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
 import uk.ac.mdx.ie.contextmodeller.util.ModelUtils;
+import uk.ac.mdx.ie.contextmodeller.util.RDFTriple;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
 public class CSPARQLWriter extends AbstractModelWriter {
@@ -68,9 +72,149 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
 		generateCSPARQLPrefixes(result, relatedSource);
 
+		result.append("CONSTRUCT { + <http://ie.cs.mdx.ac.uk/POSEIDON/context/is> \"" + relatedState.getName() + "\"} \n");
+
+		result.append("FROM STREAM <http://poseidon-project.org/context-stream> [RANGE " + generateCSPARQLRange(rule) + "] \n");
+
+		result.append("WHERE { ");
+		result.append(ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource));
+
+		HashMap<String, String> subresexp = generateCSPARQLSubqueries(result, relatedSource, rule);
+
+		generateCSPARQLFilters(result, rule, subresexp);
+
+		result.append("}\n");
 	}
 
-    private static void generateCSPARQLPrefixes(StringBuilder result,
+    private static void generateCSPARQLFilters(StringBuilder result,
+			MObject rule, HashMap<String, String> subresexp) {
+
+    	if (! subresexp.isEmpty()) {
+    		result.append("FILTER ( ");
+
+        	for(Entry<String, String> subquery : subresexp.entrySet()) {
+        		result.append(subquery.getKey());
+        		result.append(" ");
+        		result.append(subquery.getValue());
+        		result.append(" &&");
+
+        	}
+
+        	int l = result.length();
+        	result.replace(l-3, l, " ) \n");
+    	}
+
+    	String logExp = ModelUtils.getTaggedValue("Rule_logicalEvals", (ModelElement) rule);
+
+    	if (! logExp.isEmpty()) {
+
+    		result.append("FILTER ( ");
+    		result.append(logExp);
+    		result.append(" ) \n");
+
+    	}
+
+	}
+
+	private static HashMap<String, String> generateCSPARQLSubqueries(StringBuilder result,
+			MObject relatedSource, MObject rule) {
+
+    	String method = "Rule_method";
+		String methodtriples = "Rule_triple";
+		String methodExpr = "Rule_methodExpr";
+		String subqueryResult = "subqres_";
+		HashMap<String, String> subqueryResultExp = new HashMap<>();
+
+		for (int i=1;i<4;i++) {
+
+			StringBuilder newMethod = new StringBuilder(method);
+			StringBuilder newMethodTriples = new StringBuilder(methodtriples);
+			StringBuilder newMethodExpr = new StringBuilder(methodExpr);
+			StringBuilder newSubqueryResult = new StringBuilder(subqueryResult);
+
+			String index = String.valueOf(i);
+
+			newMethod.append(index);
+
+			String methodValue = ModelUtils.getTaggedValue(newMethod.toString(), (ModelElement) rule);
+
+			if (! methodValue.isEmpty()) {
+				newMethodTriples.append(index);
+				newMethodExpr.append(index);
+				String methodTriplesValue = ModelUtils.getTaggedValue(newMethodTriples.toString(), (ModelElement) rule);
+				String methodExprValue = ModelUtils.getTaggedValue(newMethodExpr.toString(), (ModelElement) rule);
+				newSubqueryResult.append(index);
+				String subqueryResultText = newSubqueryResult.toString();
+
+				String sourceTriplesText = ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource);
+				ArrayList<RDFTriple> sourceTriples = ModelUtils.getRDFTriples(sourceTriplesText);
+
+				RDFTriple queryRelatedTriple = ModelUtils.getRDFTripleForVar(sourceTriples, methodTriplesValue);
+
+				result.append("{\n");
+				result.append("SELECT ");
+
+				if (! methodExprValue.isEmpty()) {
+
+					subqueryResultExp.put(subqueryResultText, methodExprValue);
+
+					result.append(" (");
+					result.append(methodValue);
+					result.append(" AS ");
+					result.append(subqueryResultText);
+					result.append(") WHERE { ");
+					result.append(queryRelatedTriple.getSubject());
+					result.append(" ");
+					result.append(queryRelatedTriple.getPredicate());
+					result.append(" ");
+					result.append(queryRelatedTriple.getObject());
+					result.append(" . \n FILTER( ");
+					result.append(methodTriplesValue);
+					result.append(" ) \n");
+
+				}
+
+				result.append("}\n");
+
+			}
+
+		}
+
+		return subqueryResultExp;
+
+	}
+
+
+
+	private static String generateCSPARQLRange(MObject rule) {
+		StringBuilder result = new StringBuilder();
+
+		EList<AssociationEnd> ends = ((Class) rule).getTargetingEnd();
+
+		String rangeevery = null;
+		String rangefor = null;
+
+		for(AssociationEnd end : ends) {
+
+			Association rangeinfo = end.getAssociation();
+
+			rangeevery = ModelUtils.getTaggedValue("SR_every", rangeinfo);
+			rangefor = ModelUtils.getTaggedValue("SR_for", rangeinfo);
+		}
+
+		if (! rangefor.isEmpty()) {
+			result.append(rangefor);
+		}
+
+		if(! rangeevery.isEmpty()) {
+			result.append(" STEP ");
+			result.append(rangeevery);
+		}
+
+		return result.toString();
+	}
+
+	private static void generateCSPARQLPrefixes(StringBuilder result,
 			MObject relatedSource) {
 
 
@@ -79,11 +223,13 @@ public class CSPARQLWriter extends AbstractModelWriter {
     	String[] prefixes = prefixStrings.split(" . ");
 
     	for (String prefix : prefixes) {
-    		prefix = prefix.trim();
 
-    		result.append("PREFIX " + prefix + " \n");
+    		if (! prefix.isEmpty()) {
+    			prefix = prefix.trim();
+
+        		result.append("PREFIX " + prefix + " \n");
+    		}
     	}
-
 	}
 
 	private static MObject getRuleState(MObject rule) {
