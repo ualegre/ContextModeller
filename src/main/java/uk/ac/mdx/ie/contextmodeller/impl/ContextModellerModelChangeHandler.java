@@ -150,13 +150,16 @@ public class ContextModellerModelChangeHandler implements IModelChangeHandler {
 
 		}
 
+		if (methodinfo.length()!=0) {
+			ruleText.append(methodinfo);
+		}
+
 		String logicalRule = ModelUtils.getTaggedValue("Rule_logicalEvals",
 				contextRule);
 
 		if (! logicalRule.isEmpty()) {
 
 			if (methodinfo.length()!=0) {
-				ruleText.append(methodinfo);
 				ruleText.append(", ");
 			}
 
