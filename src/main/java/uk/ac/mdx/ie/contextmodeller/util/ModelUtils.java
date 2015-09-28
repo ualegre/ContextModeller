@@ -190,7 +190,7 @@ public class ModelUtils {
 
 	}
 
-	public static RDFTriple getRDFTripleForVar(ArrayList<RDFTriple> triples, String var) {
+	public static RDFTriple getRDFTripleForVar(List<RDFTriple> triples, String var) {
 
 		RDFTriple result = null;
 

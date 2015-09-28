@@ -56,14 +56,14 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
 	private static void generateCSPARQLQuery(StringBuilder result, MObject rule) {
 
-		MObject relatedSource;
+		List<MObject> relatedSources;
 		MObject relatedState;
 
-		relatedSource = getRuleSource(rule);
+		relatedSources = getRuleSources(rule);
 		relatedState = getRuleState(rule);
 
 		//We cannot proceed without a source and state
-		if (relatedSource == null || relatedState == null) {
+		if (relatedSources.isEmpty() || relatedState == null) {
 			return;
 		}
 
@@ -71,9 +71,10 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		result.append("REGISTER QUERY " + relatedState.getName() + "_query AS ");
 		result.append(System.lineSeparator());
 
-		generateCSPARQLPrefixes(result, relatedSource);
-
-		result.append("CONSTRUCT { + <http://ie.cs.mdx.ac.uk/POSEIDON/context/is> \"" + relatedState.getName() + "\"} ");
+		generateCSPARQLPrefixes(result, relatedSources);
+		String firstSourceName = relatedSources.get(0).getName();
+		result.append("CONSTRUCT { ex:" + firstSourceName.toLowerCase()
+				+ "<http://ie.cs.mdx.ac.uk/POSEIDON/context/is> \"" + relatedState.getName() + "\"} ");
 		result.append(System.lineSeparator());
 
 		result.append("FROM STREAM <http://poseidon-project.org/context-stream> [RANGE " + generateCSPARQLRange(rule) + "] ");
@@ -82,10 +83,12 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		result.append("WHERE { ");
 		result.append(System.lineSeparator());
 
-		String triples = ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource);
-		List<RDFTriple> sourceRDF = ModelUtils.getRDFTriples(triples);
+		List<RDFTriple> sourceRDF = new ArrayList<RDFTriple>();
 
-		//result.append(ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource));
+		for (MObject relatedSource : relatedSources) {
+			String triples = ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource);
+			sourceRDF.addAll(ModelUtils.getRDFTriples(triples));
+		}
 
 		for (RDFTriple rdf : sourceRDF) {
 			result.append(rdf.toString());
@@ -93,7 +96,7 @@ public class CSPARQLWriter extends AbstractModelWriter {
 			result.append(System.lineSeparator());
 		}
 
-		HashMap<String, String> subresexp = generateCSPARQLSubqueries(result, relatedSource, rule);
+		HashMap<String, String> subresexp = generateCSPARQLSubqueries(result, sourceRDF, rule);
 
 		generateCSPARQLFilters(result, rule, subresexp);
 
@@ -136,7 +139,7 @@ public class CSPARQLWriter extends AbstractModelWriter {
 	}
 
 	private static HashMap<String, String> generateCSPARQLSubqueries(StringBuilder result,
-			MObject relatedSource, MObject rule) {
+			List<RDFTriple> sourceTriples, MObject rule) {
 
     	String method = "Rule_method";
 		String methodtriples = "Rule_triple";
@@ -164,9 +167,6 @@ public class CSPARQLWriter extends AbstractModelWriter {
 				String methodExprValue = ModelUtils.getTaggedValue(newMethodExpr.toString(), (ModelElement) rule);
 				newSubqueryResult.append(index);
 				String subqueryResultText = newSubqueryResult.toString();
-
-				String sourceTriplesText = ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource);
-				ArrayList<RDFTriple> sourceTriples = ModelUtils.getRDFTriples(sourceTriplesText);
 
 				RDFTriple queryRelatedTriple = ModelUtils.getRDFTripleForVar(sourceTriples, methodTriplesValue);
 
@@ -238,22 +238,26 @@ public class CSPARQLWriter extends AbstractModelWriter {
 	}
 
 	private static void generateCSPARQLPrefixes(StringBuilder result,
-			MObject relatedSource) {
+			List<MObject> relatedSources) {
 
 
-    	String prefixStrings = ModelUtils.getTaggedValue("Source_ont", (ModelElement) relatedSource);
+		for (MObject relatedSource : relatedSources) {
 
-    	String[] prefixes = prefixStrings.split(" . ");
+			String prefixStrings = ModelUtils.getTaggedValue("Source_ont", (ModelElement) relatedSource);
 
-    	for (String prefix : prefixes) {
+	    	String[] prefixes = prefixStrings.split(" . ");
 
-    		if (! prefix.isEmpty()) {
-    			prefix = prefix.trim();
+	    	for (String prefix : prefixes) {
 
-        		result.append("PREFIX " + prefix + " ");
-        		result.append(System.lineSeparator());
-    		}
-    	}
+	    		if (! prefix.isEmpty()) {
+	    			prefix = prefix.trim();
+
+	        		result.append("PREFIX " + prefix + " ");
+	        		result.append(System.lineSeparator());
+	    		}
+	    	}
+		}
+
 	}
 
 	private static MObject getRuleState(MObject rule) {
@@ -268,17 +272,16 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
 	}
 
-    private static MObject getRuleSource(MObject rule) {
+    private static List<MObject> getRuleSources(MObject rule) {
 
+    	List<MObject> sources = new ArrayList<MObject>();
     	EList<AssociationEnd> ends  = ((Class) rule).getTargetingEnd();
 
     	for (AssociationEnd end : ends) {
-
-    		return end.getSource();
-
+    		sources.add(end.getSource());
     	}
 
-    	return null;
+    	return sources;
 	}
 
 	private List<MObject> getRules() {
