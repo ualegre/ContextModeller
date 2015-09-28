@@ -68,22 +68,28 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		}
 
 
-		result.append("REGISTER QUERY " + relatedSource.getName() + "_query AS \n");
+		result.append("REGISTER QUERY " + relatedState.getName() + "_query AS ");
+		result.append(System.lineSeparator());
 
 		generateCSPARQLPrefixes(result, relatedSource);
 
-		result.append("CONSTRUCT { + <http://ie.cs.mdx.ac.uk/POSEIDON/context/is> \"" + relatedState.getName() + "\"} \n");
+		result.append("CONSTRUCT { + <http://ie.cs.mdx.ac.uk/POSEIDON/context/is> \"" + relatedState.getName() + "\"} ");
+		result.append(System.lineSeparator());
 
-		result.append("FROM STREAM <http://poseidon-project.org/context-stream> [RANGE " + generateCSPARQLRange(rule) + "] \n");
+		result.append("FROM STREAM <http://poseidon-project.org/context-stream> [RANGE " + generateCSPARQLRange(rule) + "] ");
+		result.append(System.lineSeparator());
 
 		result.append("WHERE { ");
 		result.append(ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource));
+		result.append(" ");
+		result.append(System.lineSeparator());
 
 		HashMap<String, String> subresexp = generateCSPARQLSubqueries(result, relatedSource, rule);
 
 		generateCSPARQLFilters(result, rule, subresexp);
 
-		result.append("}\n");
+		result.append("}");
+		result.append(System.lineSeparator());
 	}
 
     private static void generateCSPARQLFilters(StringBuilder result,
@@ -101,7 +107,8 @@ public class CSPARQLWriter extends AbstractModelWriter {
         	}
 
         	int l = result.length();
-        	result.replace(l-3, l, " ) \n");
+        	result.replace(l-3, l, " ) ");
+        	result.append(System.lineSeparator());
     	}
 
     	String logExp = ModelUtils.getTaggedValue("Rule_logicalEvals", (ModelElement) rule);
@@ -110,7 +117,8 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
     		result.append("FILTER ( ");
     		result.append(logExp);
-    		result.append(" ) \n");
+    		result.append(" ) ");
+    		result.append(System.lineSeparator());
 
     	}
 
@@ -151,7 +159,8 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
 				RDFTriple queryRelatedTriple = ModelUtils.getRDFTripleForVar(sourceTriples, methodTriplesValue);
 
-				result.append("{\n");
+				result.append("{");
+				result.append(System.lineSeparator());
 				result.append("SELECT ");
 
 				if (! methodExprValue.isEmpty()) {
@@ -168,9 +177,12 @@ public class CSPARQLWriter extends AbstractModelWriter {
 					result.append(queryRelatedTriple.getPredicate());
 					result.append(" ");
 					result.append(queryRelatedTriple.getObject());
-					result.append(" . \n FILTER( ");
+					result.append(" . ");
+					result.append(System.lineSeparator());
+					result.append("FILTER( ");
 					result.append(methodTriplesValue);
-					result.append(" ) \n");
+					result.append(" ) ");
+					result.append(System.lineSeparator());
 
 				}
 
@@ -227,7 +239,8 @@ public class CSPARQLWriter extends AbstractModelWriter {
     		if (! prefix.isEmpty()) {
     			prefix = prefix.trim();
 
-        		result.append("PREFIX " + prefix + " \n");
+        		result.append("PREFIX " + prefix + " ");
+        		result.append(System.lineSeparator());
     		}
     	}
 	}
