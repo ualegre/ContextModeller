@@ -40,6 +40,8 @@ public class RDFTriple {
 
 	public RDFTriple (String triple) {
 
+		triple = triple.trim();
+
 		String[] components = triple.split("\\s+");
 
 		if (components.length==3) {

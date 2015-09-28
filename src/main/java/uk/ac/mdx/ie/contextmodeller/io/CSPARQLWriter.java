@@ -80,9 +80,18 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		result.append(System.lineSeparator());
 
 		result.append("WHERE { ");
-		result.append(ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource));
-		result.append(" ");
 		result.append(System.lineSeparator());
+
+		String triples = ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource);
+		List<RDFTriple> sourceRDF = ModelUtils.getRDFTriples(triples);
+
+		//result.append(ModelUtils.getTaggedValue("Source_data", (ModelElement) relatedSource));
+
+		for (RDFTriple rdf : sourceRDF) {
+			result.append(rdf.toString());
+			result.append(" . ");
+			result.append(System.lineSeparator());
+		}
 
 		HashMap<String, String> subresexp = generateCSPARQLSubqueries(result, relatedSource, rule);
 
