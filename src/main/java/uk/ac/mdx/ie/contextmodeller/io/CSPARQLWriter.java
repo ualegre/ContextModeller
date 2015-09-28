@@ -123,12 +123,14 @@ public class CSPARQLWriter extends AbstractModelWriter {
     	String logExp = ModelUtils.getTaggedValue("Rule_logicalEvals", (ModelElement) rule);
 
     	if (! logExp.isEmpty()) {
+    		String[] logExps = logExp.split("\\,");
 
-    		result.append("FILTER ( ");
-    		result.append(logExp);
-    		result.append(" ) ");
-    		result.append(System.lineSeparator());
-
+    		for (String exp : logExps) {
+    			result.append("FILTER ( ");
+        		result.append(exp.trim());
+        		result.append(" ) ");
+        		result.append(System.lineSeparator());
+    		}
     	}
 
 	}
