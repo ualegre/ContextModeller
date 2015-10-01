@@ -43,9 +43,9 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
 	@Override
 	public String writeToString() {
-		StringBuilder result = new StringBuilder();
-
 		List<MObject> rules = getRules();
+
+		StringBuilder result = new StringBuilder(rules.size() * 150);
 
 		for (MObject rule : rules) {
 			generateCSPARQLQuery(result, rule);
@@ -210,6 +210,7 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
 
 	private static String generateCSPARQLRange(MObject rule) {
+		boolean triplesRange = false;
 		StringBuilder result = new StringBuilder();
 
 		EList<AssociationEnd> ends = ((Class) rule).getTargetingEnd();
@@ -226,13 +227,41 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		}
 
 		if (! rangefor.isEmpty()) {
-			result.append(rangefor);
+
+			String rangeCase = rangefor.toLowerCase();
+
+			if (rangeCase.contains("triples")) {
+				result.append(triplesRange(rangeCase));
+				triplesRange = true;
+			} else {
+				result.append(rangeCase);
+			}
 		}
 
 		if(! rangeevery.isEmpty()) {
-			result.append(" STEP ");
-			result.append(rangeevery);
+
+			String rangeCase = rangeevery.toLowerCase();
+
+			if (rangeCase.contains("triples")) {
+
+				if (! triplesRange ) {
+					result.append(triplesRange(rangeCase));
+				}
+
+			} else {
+				result.append(" STEP ");
+				result.append(rangeCase);
+			}
 		}
+
+		return result.toString();
+	}
+
+	private static String triplesRange(String str) {
+
+		StringBuilder result = new StringBuilder();
+		result.append("TRIPLES ");
+		result.append(str.replaceAll("[^\\D]", ""));
 
 		return result.toString();
 	}
@@ -252,7 +281,9 @@ public class CSPARQLWriter extends AbstractModelWriter {
 	    		if (! prefix.isEmpty()) {
 	    			prefix = prefix.trim();
 
-	        		result.append("PREFIX " + prefix + " ");
+	        		result.append("PREFIX ");
+	        		result.append(prefix);
+	        		result.append(" ");
 	        		result.append(System.lineSeparator());
 	    		}
 	    	}
