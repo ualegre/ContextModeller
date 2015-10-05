@@ -138,7 +138,6 @@
         <Diagrams>
             <DiagramType base-diagram="ClassDiagram" stereotype="ContextModel">
                 <Palette keepBasePalette="false">
-                    <ToolRef refid="ContextModelTool" group="Relations"/>
                     <ToolRef refid="ContextAssociationTool" group="Relations"/>
                     <ToolRef refid="ContextSourceTool" group="Elements"/>
                     <ToolRef refid="ContextRuleTool" group="Elements"/>
