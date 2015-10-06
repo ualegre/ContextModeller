@@ -240,8 +240,6 @@ public class ContextModellerModelChangeHandler implements IModelChangeHandler {
 			str.append(" . \n");
 		}
 
-		str.append("data:- " + data);
-
 		sourceText.setContent(str.toString());
 
 	}
