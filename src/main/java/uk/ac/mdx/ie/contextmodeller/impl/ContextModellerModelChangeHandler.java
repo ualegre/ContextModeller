@@ -16,6 +16,7 @@
 
 package uk.ac.mdx.ie.contextmodeller.impl;
 
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
@@ -35,6 +36,7 @@ import org.modelio.metamodel.uml.statik.Class;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
 import uk.ac.mdx.ie.contextmodeller.util.ModelUtils;
+import uk.ac.mdx.ie.contextmodeller.util.RDFTriple;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
 public class ContextModellerModelChangeHandler implements IModelChangeHandler {
@@ -228,6 +230,16 @@ public class ContextModellerModelChangeHandler implements IModelChangeHandler {
 		str.append("\n\n");
 		// Next ontological data
 		String data = ModelUtils.getTaggedValue("Source_data", contextSource);
+
+		List<RDFTriple> dataRDF = ModelUtils.getRDFTriples(data);
+		String dataString = "data:-";
+		str.append(dataString);
+
+		for (RDFTriple rdf : dataRDF) {
+			str.append(rdf.toString());
+			str.append(" . \n");
+		}
+
 		str.append("data:- " + data);
 
 		sourceText.setContent(str.toString());
