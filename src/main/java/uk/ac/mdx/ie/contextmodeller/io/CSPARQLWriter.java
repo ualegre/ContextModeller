@@ -43,15 +43,91 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
 	@Override
 	public String writeToString() {
-		List<MObject> rules = getRules();
+		List<MObject> atomicRules = getRules();
+		List<MObject> aggRules = getAggrRules();
 
-		StringBuilder result = new StringBuilder(rules.size() * 150);
+		StringBuilder result = new StringBuilder((atomicRules.size() * 150) + (aggRules.size() * 50));
 
-		for (MObject rule : rules) {
+		for (MObject rule : atomicRules) {
 			generateCSPARQLQuery(result, rule);
 		}
 
+		result.append(System.lineSeparator());
+
+		for (MObject rule : aggRules) {
+			generateAggregateRule(result, rule);
+		}
+
 		return result.toString();
+	}
+
+	private static void generateAggregateRule(StringBuilder result, MObject rule) {
+
+		boolean start = true;
+
+		EList<AssociationEnd> ends  = ((Class) rule).getTargetingEnd();
+
+		for (AssociationEnd end : ends) {
+			MObject literal = end.getSource();
+
+			if (start) {
+				start = false;
+			} else {
+				String nodeType = ModelUtils.getTaggedValue("Aggr_type", end);
+				String nodeTypeStr = "and";
+
+				if (nodeType.equalsIgnoreCase("not")) {
+					nodeTypeStr = "not";
+				}
+
+
+				result.append(nodeTypeStr);
+				result.append(" ");
+			}
+
+			result.append(literal.getName());
+			result.append(" ");
+		}
+
+		result.append("iff ");
+		result.append(rule.getName());
+		result.append(System.lineSeparator());
+
+	}
+
+	private List<MObject> getAggrRules() {
+
+		List<MObject> rules = new ArrayList<MObject>();
+
+
+		List<MObject> ownedClasses = (List<MObject>) model.getCompositionChildren();
+
+		for (MObject ownedClass : ownedClasses) {
+
+			if (((ModelElement) ownedClass).isStereotyped(Utils.CONTEXT_MODELLER, Utils.CONTEXT_STATE)) {
+				EList<AssociationEnd> ends  = ((Class) ownedClass).getTargetingEnd();
+				boolean agg = true;
+
+				if (ends.isEmpty()) {
+					agg = false;
+				}
+
+		    	for (AssociationEnd end : ends) {
+
+		    		MObject assocObject = end.getSource();
+
+		    		if (! ((ModelElement) assocObject).isStereotyped(Utils.CONTEXT_MODELLER, Utils.CONTEXT_STATE)) {
+		    			agg = false;
+		    		}
+		    	}
+
+		    	if (agg) {
+		    		rules.add(ownedClass);
+		    	}
+			}
+		}
+
+		return rules;
 	}
 
 	private static void generateCSPARQLQuery(StringBuilder result, MObject rule) {
