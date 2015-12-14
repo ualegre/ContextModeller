@@ -150,7 +150,7 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		generateCSPARQLPrefixes(result, relatedSources);
 		String firstSourceName = relatedSources.get(0).getName();
 		result.append("CONSTRUCT { ex:" + firstSourceName.toLowerCase()
-				+ "<http://ie.cs.mdx.ac.uk/POSEIDON/context/is> \"" + relatedState.getName() + "\"} ");
+				+ " <http://ie.cs.mdx.ac.uk/POSEIDON/context/is> \"" + relatedState.getName() + "\"} ");
 		result.append(System.lineSeparator());
 
 		result.append("FROM STREAM <http://poseidon-project.org/context-stream> [RANGE " + generateCSPARQLRange(rule) + "] ");
@@ -178,6 +178,7 @@ public class CSPARQLWriter extends AbstractModelWriter {
 
 		result.append("}");
 		result.append(System.lineSeparator());
+		result.append(System.lineSeparator());
 	}
 
     private static void generateCSPARQLFilters(StringBuilder result,
@@ -190,7 +191,7 @@ public class CSPARQLWriter extends AbstractModelWriter {
         		result.append(subquery.getKey());
         		result.append(" ");
         		result.append(subquery.getValue());
-        		result.append(" &&");
+        		result.append(" && ");
 
         	}
 
@@ -243,8 +244,35 @@ public class CSPARQLWriter extends AbstractModelWriter {
 				String methodExprValue = ModelUtils.getTaggedValue(newMethodExpr.toString(), (ModelElement) rule);
 				newSubqueryResult.append(index);
 				String subqueryResultText = newSubqueryResult.toString();
+				List<RDFTriple> queryRelatedTriples = new ArrayList<RDFTriple>();
 
-				RDFTriple queryRelatedTriple = ModelUtils.getRDFTripleForVar(sourceTriples, methodTriplesValue);
+				//Map values to specific object variables
+				HashMap<String, String> methodTripleValueMap = new HashMap<>();
+
+				//Might have several value to variables
+				String[] methodTripleValues = methodTriplesValue.split(",");
+
+				for (String str: methodTripleValues) {
+					str.trim();
+					String[] strs = str.split("=");
+
+					if (strs.length == 2) {
+						String var = strs[0].trim();
+						//methodTripleValueMap.put(var, strs[1].trim());
+						RDFTriple triple = ModelUtils.getRDFTripleForVar(sourceTriples, var);
+						if (triple != null) {
+							queryRelatedTriples.add(triple);
+						}
+
+					}
+				}
+
+				if (queryRelatedTriples.isEmpty()) {
+					queryRelatedTriples.addAll(sourceTriples);
+				}
+
+
+				//RDFTriple queryRelatedTriple = ModelUtils.getRDFTripleForVar(sourceTriples, methodTriplesValue);
 
 				result.append("{");
 				result.append(System.lineSeparator());
@@ -258,23 +286,30 @@ public class CSPARQLWriter extends AbstractModelWriter {
 					result.append(methodValue);
 					result.append(" AS ");
 					result.append(subqueryResultText);
-					result.append(") WHERE { ");
-					result.append(queryRelatedTriple.getSubject());
-					result.append(" ");
-					result.append(queryRelatedTriple.getPredicate());
-					result.append(" ");
-					result.append(queryRelatedTriple.getObject());
-					result.append(" . ");
+					result.append(") ");
 					result.append(System.lineSeparator());
+					result.append("WHERE { ");
+
+					for (RDFTriple rdftriple : queryRelatedTriples) {
+						result.append(rdftriple.getSubject());
+						result.append(" ");
+						result.append(rdftriple.getPredicate());
+						result.append(" ");
+						result.append(rdftriple.getObject());
+						result.append(" . ");
+						result.append(System.lineSeparator());
+					}
+
 					result.append("FILTER( ");
 					result.append(methodTriplesValue);
 					result.append(" ) ");
 					result.append(System.lineSeparator());
-
+					result.append("}");
+					result.append(System.lineSeparator());
 				}
 
-				result.append("}\n");
-
+				result.append("}");
+				result.append(System.lineSeparator());
 			}
 
 		}
