@@ -300,12 +300,15 @@ public class CSPARQLWriter extends AbstractModelWriter {
 						result.append(System.lineSeparator());
 					}
 
-					result.append("FILTER( ");
-					result.append(methodTriplesValue);
-					result.append(" ) ");
-					result.append(System.lineSeparator());
-					result.append("}");
-					result.append(System.lineSeparator());
+					if (! methodTriplesValue.isEmpty()) {
+						result.append("FILTER( ");
+						result.append(methodTriplesValue);
+						result.append(" ) ");
+						result.append(System.lineSeparator());
+						result.append("}");
+						result.append(System.lineSeparator());
+					}
+
 				}
 
 				result.append("}");
