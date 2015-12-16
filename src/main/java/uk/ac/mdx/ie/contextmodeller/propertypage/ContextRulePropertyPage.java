@@ -87,7 +87,6 @@ public class ContextRulePropertyPage implements IPropertyContent {
 
 			String index = String.valueOf(i);
 
-			newMethod.append(index);
 
 			if (! value.isEmpty()) {
 				newMethod.append(index);
