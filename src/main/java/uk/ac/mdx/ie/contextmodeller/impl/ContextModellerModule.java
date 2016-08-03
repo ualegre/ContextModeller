@@ -16,13 +16,13 @@
 
 package uk.ac.mdx.ie.contextmodeller.impl;
 
-import org.modelio.api.model.IModelingSession;
 import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IModelingSession;
 import org.modelio.api.module.AbstractJavaModule;
-import org.modelio.api.module.IModuleAPIConfiguration;
-import org.modelio.api.module.IModuleSession;
-import org.modelio.api.module.IModuleUserConfiguration;
-import org.modelio.api.module.IParameterEditionModel;
+import org.modelio.api.module.context.configuration.IModuleAPIConfiguration;
+import org.modelio.api.module.context.configuration.IModuleUserConfiguration;
+import org.modelio.api.module.lifecycle.IModuleLifeCycleHandler;
+import org.modelio.api.module.parameter.IParameterEditionModel;
 import org.modelio.metamodel.mda.ModuleComponent;
 
 /**
@@ -42,17 +42,7 @@ public class ContextModellerModule extends AbstractJavaModule {
 		return this.peerModule;
 	}
 
-	/**
-	 * Return the session attached to the current module.
-	 * <p>
-	 * <p>
-	 * This session is used to manage the module lifecycle by declaring the
-	 * desired implementation on start, select... methods.
-	 */
-	@Override
-	public IModuleSession getSession() {
-		return this.session;
-	}
+
 
 	/**
 	 * Method automatically called just after the creation of the module.
@@ -143,6 +133,14 @@ public class ContextModellerModule extends AbstractJavaModule {
 	@Override
 	public String getModuleImagePath() {
 		return "/res/icons/module_16.png";
+	}
+
+
+
+	@Override
+	public IModuleLifeCycleHandler getLifeCycleHandler() {
+		// TODO Auto-generated method stub
+		return session;
 	}
 
 }

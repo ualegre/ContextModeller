@@ -18,8 +18,8 @@ package uk.ac.mdx.ie.contextmodeller.propertypage;
 
 import java.util.List;
 
-import org.modelio.api.model.IMetamodelExtensions;
 import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IMetamodelExtensions;
 import org.modelio.api.module.propertiesPage.IModulePropertyTable;
 import org.modelio.metamodel.Metamodel;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
@@ -28,6 +28,7 @@ import org.modelio.metamodel.uml.statik.Association;
 import org.modelio.metamodel.uml.statik.Class;
 
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
+
 
 public class ContextModellerPropertyManager implements IPropertyContent {
 

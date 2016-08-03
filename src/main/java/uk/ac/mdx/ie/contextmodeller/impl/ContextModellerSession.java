@@ -16,38 +16,32 @@
 
 package uk.ac.mdx.ie.contextmodeller.impl;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.util.Map;
 
-import org.modelio.api.log.ILogService;
-import org.modelio.api.model.IModelingSession;
-import org.modelio.api.modelio.Modelio;
-import org.modelio.api.module.DefaultModuleSession;
-import org.modelio.api.module.ModuleException;
+import org.modelio.api.modelio.model.IModelingSession;
+import org.modelio.api.module.IModule;
+import org.modelio.api.module.context.log.ILogService;
+import org.modelio.api.module.lifecycle.DefaultModuleLifeCycleHandler;
+import org.modelio.api.module.lifecycle.ModuleException;
 import org.modelio.vbasic.version.Version;
 
+
+
 /**
- * Implementation of the IModuleSession interface. <br>
- * This default implementation may be inherited by the module developers in
- * order to simplify the code writing of the module session.
+ * Implementation of the IModuleLifeCycleHandler interface.
+ * <br>This default implementation may be inherited by the module developers in order to simplify the code writing of the module session.
  */
-public class ContextModellerSession extends DefaultModuleSession {
+public class ContextModellerSession extends DefaultModuleLifeCycleHandler {
 
 	private ContextModellerModelChangeHandler modelChangeHandler;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param module
-	 *            the Module this session is instanciated for.
-	 */
-	public ContextModellerSession(ContextModellerModule module) {
+	public ContextModellerSession(IModule module) {
 		super(module);
 	}
 
+
 	/**
-	 * @see org.modelio.api.module.DefaultModuleSession#start()
+	 * @see org.modelio.api.module.DefaultModuleLifeCycleHandler#start()
 	 */
 	@Override
 	public boolean start() throws ModuleException {
@@ -55,53 +49,33 @@ public class ContextModellerSession extends DefaultModuleSession {
 		Version moduleVersion = this.module.getVersion();
 
 		// get the Modelio log service
-		ILogService logService = Modelio.getInstance().getLogService();
+		ILogService logService = this.module.getModuleContext().getLogService();
 
-		String message = "Start of " + this.module.getName() + " "
-				+ moduleVersion;
-		logService.info(this.module, message);
+		String message = "Start of " + this.module.getName() + " " + moduleVersion;
+		logService.info(message);
 
 		IModelingSession session = this.module.getModelingSession();
 		modelChangeHandler = new ContextModellerModelChangeHandler();
-		session.addModelHandler(modelChangeHandler);
 
-		installStyle();
+		session.addModelHandler(modelChangeHandler);
 
 		return super.start();
 	}
 
-	private void installStyle() {
-
-		Path mdaplugsPath = this.module.getConfiguration()
-				.getModuleResourcesPath();
-
-		Modelio.getInstance()
-				.getDiagramService()
-				.registerStyle(
-						"contextmodeller",
-						"default",
-						new File(mdaplugsPath.resolve(
-								"res" + File.separator + "style"
-										+ File.separator + "cm.style")
-								.toString()));
-
-	}
-
 	/**
-	 * @see org.modelio.api.module.DefaultModuleSession#stop()
+	 * @see org.modelio.api.module.DefaultModuleLifeCycleHandler#stop()
 	 */
 	@Override
 	public void stop() throws ModuleException {
 		super.stop();
 	}
 
-	public static boolean install(String modelioPath, String mdaPath)
-			throws ModuleException {
-		return DefaultModuleSession.install(modelioPath, mdaPath);
+	public static boolean install(String modelioPath, String mdaPath) throws ModuleException {
+		return DefaultModuleLifeCycleHandler.install(modelioPath, mdaPath);
 	}
 
 	/**
-	 * @see org.modelio.api.module.DefaultModuleSession#select()
+	 * @see org.modelio.api.module.DefaultModuleLifeCycleHandler#select()
 	 */
 	@Override
 	public boolean select() throws ModuleException {
@@ -109,7 +83,7 @@ public class ContextModellerSession extends DefaultModuleSession {
 	}
 
 	/**
-	 * @see org.modelio.api.module.DefaultModuleSession#unselect()
+	 * @see org.modelio.api.module.DefaultModuleLifeCycleHandler#unselect()
 	 */
 	@Override
 	public void unselect() throws ModuleException {
@@ -117,12 +91,11 @@ public class ContextModellerSession extends DefaultModuleSession {
 	}
 
 	/**
-	 * @see org.modelio.api.module.DefaultModuleSession#upgrade(org.modelio.api.modelio.Version,
-	 *      java.util.Map)
+	 * @see org.modelio.api.module.DefaultModuleLifeCycleHandler#upgrade(org.modelio.api.modelio.Version, java.util.Map)
 	 */
 	@Override
-	public void upgrade(Version oldVersion, Map<String, String> oldParameters)
-			throws ModuleException {
+	public void upgrade(Version oldVersion, Map<String, String> oldParameters) throws ModuleException {
 		super.upgrade(oldVersion, oldParameters);
 	}
+
 }

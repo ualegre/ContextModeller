@@ -28,6 +28,7 @@ import org.modelio.metamodel.uml.statik.Package;
 public abstract class AbstractModelWriter {
 
 	protected Package model;
+	protected File mFile;
 
 
 	public void setModel(Package package1) {
@@ -40,6 +41,7 @@ public abstract class AbstractModelWriter {
 		FileOutputStream output = null;
 		try {
 			if (!file.exists()) file.createNewFile();
+			mFile = file;
 			output = new FileOutputStream(file);
 			output.write(writeToString().getBytes());
 			output.flush();

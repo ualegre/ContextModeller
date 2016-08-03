@@ -16,7 +16,7 @@
 
 package uk.ac.mdx.ie.contextmodeller.impl;
 
-import org.modelio.api.log.ILogService;
+import org.modelio.api.module.context.log.ILogService;
 
 public class CMLogger {
 

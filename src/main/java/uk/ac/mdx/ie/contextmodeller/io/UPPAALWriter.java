@@ -35,8 +35,17 @@ public class UPPAALWriter extends AbstractModelWriter {
 
 		StringBuilder sb = new StringBuilder();
 		addHeader(sb);
+		addGlobalDeclarations(sb, null);
+
+		generateQueryFile();
 
 		return sb.toString();
+	}
+
+	private void generateQueryFile() {
+
+
+
 	}
 
 	private StringBuilder addGlobalDeclarations(StringBuilder sb, String declarations) {

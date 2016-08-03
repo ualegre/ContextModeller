@@ -27,8 +27,26 @@ public class ContextAggregationPropertyPage implements IPropertyContent {
 	@Override
 	public void changeProperty(ModelElement element, int row, String value) {
 
+		/*MObject e = element;
+
+		List<Classifier> parent = (List<Classifier>) e.getCompositionOwner().getCompositionOwner().getCompositionOwner().getCompositionChildren();
+
+		for (Classifier p : parent) {
+			if (p.isStereotyped(Utils.CONTEXT_MODELLER,
+							Utils.CONTEXT_MODEL)) {
+				List<MObject> obs = (List<MObject>) p.getCompositionChildren();
+				System.out.println(obs);
+			}
+
+		}*/
+
 		if (row == 1) {
 			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_type", value,
+					element);
+		}
+
+		if (row == 2) {
+			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_temporal", value,
 					element);
 		}
 
@@ -39,6 +57,8 @@ public class ContextAggregationPropertyPage implements IPropertyContent {
 
 		table.addProperty("Aggregation Operator",
 				ModelUtils.getTaggedValue("Aggr_type", element));
+		table.addProperty("Aggregation Temporal Constraints",
+				ModelUtils.getTaggedValue("Aggr_temporal", element));
 
 	}
 

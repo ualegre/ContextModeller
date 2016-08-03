@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
-import org.modelio.api.model.IUmlModel;
 import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IUmlModel;
 import org.modelio.metamodel.uml.infrastructure.Dependency;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 import org.modelio.metamodel.uml.infrastructure.TagParameter;

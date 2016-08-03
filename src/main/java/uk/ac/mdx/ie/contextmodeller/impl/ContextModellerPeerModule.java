@@ -16,7 +16,8 @@
 
 package uk.ac.mdx.ie.contextmodeller.impl;
 
-import org.modelio.api.module.IModuleAPIConfiguration;
+
+import org.modelio.api.module.context.configuration.IModuleAPIConfiguration;
 import org.modelio.vbasic.version.Version;
 
 import uk.ac.mdx.ie.contextmodeller.api.IContextModellerPeerModule;

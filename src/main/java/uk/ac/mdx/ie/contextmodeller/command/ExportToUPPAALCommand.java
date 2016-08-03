@@ -23,18 +23,18 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
-import org.modelio.api.log.ILogService;
-import org.modelio.api.model.IModelingSession;
 import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IModelingSession;
 import org.modelio.api.module.IModule;
-import org.modelio.api.module.IModuleUserConfiguration;
-import org.modelio.api.module.commands.DefaultModuleCommandHandler;
+import org.modelio.api.module.command.DefaultModuleCommandHandler;
+import org.modelio.api.module.context.configuration.IModuleUserConfiguration;
+import org.modelio.api.module.context.log.ILogService;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 import org.modelio.metamodel.uml.statik.Package;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
 import uk.ac.mdx.ie.contextmodeller.io.AbstractModelWriter;
-import uk.ac.mdx.ie.contextmodeller.io.CSPARQLWriter;
+import uk.ac.mdx.ie.contextmodeller.io.UPPAALWriter;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
 /**
@@ -96,12 +96,13 @@ public class ExportToUPPAALCommand extends DefaultModuleCommandHandler {
 		dialog.setFileName("rules.xml");
 		String fileLocation = dialog.open();
 
-		AbstractModelWriter csparqlGen = new CSPARQLWriter();
+		AbstractModelWriter csparqlGen = new UPPAALWriter();
 
 		if (! modelelt.isStereotyped(Utils.CONTEXT_MODELLER, Utils.CONTEXT_MODEL)) {
 			MessageDialog.openError(null, "Error", "Element is not a Context Model");
 			return;
 		}
+
 		File newFile = new File(fileLocation);
 
 		if (newFile.exists()) {

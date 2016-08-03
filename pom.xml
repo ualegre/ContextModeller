@@ -21,7 +21,7 @@
 	<!-- definition -->
 	<groupId>uk.ac.mdx.ie</groupId>
 	<artifactId>contextmodeller</artifactId>
-	<version>0.2.0</version>
+	<version>0.3.0</version>
 
 	<name>ContextModeller</name>
 
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>org.modelio</groupId>
 			<artifactId>MDAKit</artifactId>
-			<version>[3.3.0,)</version>
+			<version>[3.5.0,3.5.1)</version>
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
@@ -82,7 +82,7 @@
 			<plugin>
 				<groupId>org.modelio</groupId>
 				<artifactId>modelio-maven-plugin</artifactId>
-				<version>3.3.0.04</version>
+				<version>3.5.0.01</version>
 				<executions>
 					<execution>
 						<id>ModuleValidation</id>
@@ -206,7 +206,7 @@
 											modelio-maven-plugin
 										</artifactId>
 										<versionRange>
-											[3.3.0.04,)
+											[3.5.0.00,3.6.0.00)
 										</versionRange>
 										<goals>
 											<goal>
@@ -228,5 +228,14 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<description>Context Modeller for SPARQL based languages </description>
+	<organization>
+		<url>http://www.mdx.ac.uk</url>
+		<name>Dean Kramer @ Middlesex University</name>
+	</organization>
+	<url>https://github.com/deankramer/ContextModeller</url>
+	<scm>
+		<url>https://github.com/deankramer/ContextModeller</url>
+	</scm>
 </project>
 
