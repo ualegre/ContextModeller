@@ -16,12 +16,42 @@
 
 package uk.ac.mdx.ie.contextmodeller.util;
 
+import java.util.List;
+
 import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IModelingSession;
+import org.modelio.metamodel.diagrams.ClassDiagram;
+import org.modelio.metamodel.diagrams.StaticDiagram;
+import org.modelio.metamodel.uml.infrastructure.ModelElement;
+import org.modelio.metamodel.uml.infrastructure.Stereotype;
 import org.modelio.metamodel.uml.statik.Class;
 import org.modelio.metamodel.uml.statik.Package;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
+import uk.ac.mdx.ie.contextmodeller.i18n.I18nMessageService;
+
 public class CMFactory {
+
+	public static StaticDiagram createContextDiagram(List<MObject> elements, IModelingSession session,
+			String stereotypeName) {
+
+		String name = I18nMessageService.getString("ContextModelTool.label");
+
+		Stereotype stereotype = session.getMetamodelExtensions().getStereotype(stereotypeName,
+				Modelio.getInstance().getMetamodelService().getMetamodel().getMClass(ClassDiagram.class));
+
+		MObject element = elements.get(0);
+
+		if (element != null) {
+			StaticDiagram diagram;
+			diagram = session.getModel().createStaticDiagram(name, (ModelElement) element, stereotype);
+			Utils.setUMLFreeName(diagram, Utils.CONTEXT_MODEL);
+			return diagram;
+
+		} else {
+			return null;
+		}
+	}
 
 	public static Class createAndAddSource(MObject owner) {
 		if (owner instanceof Package) {

@@ -99,15 +99,15 @@ public class ContextModellerModelChangeHandler implements IModelChangeHandler {
 
 		StringBuilder value = new StringBuilder();
 
-		value.append("Every: ");
+		value.append("\nEvery: ");
 		value.append(aevery + "\n");
 		if (! afor.isEmpty()) {
 			value.append("For: ");
 			value.append(afor);
+			value.append("\n ");
 		}
 
 		element.setName(value.toString());
-
 	}
 
 	private static void updateContextRuleInformation(Class contextRule) {

@@ -91,6 +91,7 @@ public class ContextSourceDiagramCommand extends DefaultBoxTool {
 					(ModelElement) source, "");
 			note.setContent("No Ontological Properties");
 
+
 			representation.unmask(note, rect.x, rect.y - 100);
 
 			representation.save();

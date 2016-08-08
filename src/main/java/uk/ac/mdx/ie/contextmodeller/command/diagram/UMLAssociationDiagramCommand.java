@@ -99,6 +99,8 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 				}
 
 				Association association = model.createAssociation();
+				AssociationEnd endSource = model.createAssociationEnd();
+				AssociationEnd endTarget = model.createAssociationEnd();
 
 				String name = "";
 				String endMulMin = "";
@@ -106,16 +108,22 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 				if (assocType == 1) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_SR_ASSOCIATION);
+					endSource.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_SR_ASSOCIATION);
+					endTarget.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_SR_ASSOCIATION);
 
-					name = "Every: \nFor: ";
+					name = "\n Every: \nFor: \n ";
 				} else if (assocType == 2) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_RS_ASSOCIATION);
+					endSource.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_RS_ASSOCIATION);
+					endTarget.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_RS_ASSOCIATION);
 
 					endMulMin = "Rule Undefined";
 				} else if (assocType == 3) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_SS_ASSOCIATION);
+					endSource.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_SS_ASSOCIATION);
+					endTarget.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_SS_ASSOCIATION);
 
 					name = "AND";
 					ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_type",
@@ -124,16 +132,17 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 
 				association.setName(name);
 
-				AssociationEnd endSource = model.createAssociationEnd();
+
 				// endSource.setName(c_destination.getName().toLowerCase());
 				endSource.setMultiplicityMin("");
 				endSource.setMultiplicityMax("");
 				endSource.setSource(c_source);
 				endSource.setTarget(c_destination);
 
-				AssociationEnd endTarget = model.createAssociationEnd();
 				endTarget.setMultiplicityMin(endMulMin);
 				endTarget.setMultiplicityMax("");
+				endTarget.setSource(c_destination);
+				endTarget.setTarget(c_source);
 
 				association.getEnd().add(endSource);
 				association.getEnd().add(endTarget);

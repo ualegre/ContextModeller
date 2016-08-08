@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.ac.mdx.ie.contextmodeller.command;
+package uk.ac.mdx.ie.contextmodeller.command.menu.export;
 
 import java.io.File;
 import java.util.List;
@@ -34,7 +34,7 @@ import org.modelio.metamodel.uml.statik.Package;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
 import uk.ac.mdx.ie.contextmodeller.io.AbstractModelWriter;
-import uk.ac.mdx.ie.contextmodeller.io.CSPARQLWriter;
+import uk.ac.mdx.ie.contextmodeller.io.UPPAALWriter;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
 /**
@@ -45,14 +45,14 @@ import uk.ac.mdx.ie.contextmodeller.util.Utils;
  * contains a default standard contextual command implementation.
  *
  */
-public class ExportToCSPARQLCommand extends DefaultModuleCommandHandler {
+public class ExportToUPPAAL extends DefaultModuleCommandHandler {
 
 	private ILogService logService;
 
 	/**
 	 * Constructor.
 	 */
-	public ExportToCSPARQLCommand() {
+	public ExportToUPPAAL() {
 		super();
 		// services logs
 		this.logService = Modelio.getInstance().getLogService();
@@ -87,21 +87,22 @@ public class ExportToCSPARQLCommand extends DefaultModuleCommandHandler {
 
 		FileDialog dialog = new FileDialog(Display.getCurrent()
 				.getActiveShell(), SWT.SAVE);
-		dialog.setFilterNames(new String[] { "Text Files", "All Files (*.*)" });
-		dialog.setFilterExtensions(new String[] { "*.txt", "*.*" }); // Windows
+		dialog.setFilterNames(new String[] { "UPPAAL System", "All Files (*.*)" });
+		dialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); // Windows
 		// wild
 		// cards
 		dialog.setFilterPath(System.getProperty("user.home") + "/Desktop"); // Windows
 																			// path
-		dialog.setFileName("rules.txt");
+		dialog.setFileName("rules.xml");
 		String fileLocation = dialog.open();
 
-		AbstractModelWriter csparqlGen = new CSPARQLWriter();
+		AbstractModelWriter csparqlGen = new UPPAALWriter();
 
 		if (! modelelt.isStereotyped(Utils.CONTEXT_MODELLER, Utils.CONTEXT_MODEL)) {
 			MessageDialog.openError(null, "Error", "Element is not a Context Model");
 			return;
 		}
+
 		File newFile = new File(fileLocation);
 
 		if (newFile.exists()) {
@@ -112,7 +113,7 @@ public class ExportToCSPARQLCommand extends DefaultModuleCommandHandler {
 
 		csparqlGen.setModel( (Package) modelelt.getCompositionOwner());
 		csparqlGen.writeToFile(newFile);
-		MessageDialog.openInformation(null, "Model Exported", "Model exported to C-SPARQL at:\n" + fileLocation);
+		MessageDialog.openInformation(null, "Model Exported", "Model exported to UPPAAL at:\n" + fileLocation);
 
 	}
 

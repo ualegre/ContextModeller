@@ -19,6 +19,7 @@ package uk.ac.mdx.ie.contextmodeller.propertypage;
 import org.modelio.api.module.propertiesPage.IModulePropertyTable;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 
+import uk.ac.mdx.ie.contextmodeller.i18n.I18nMessageService;
 import uk.ac.mdx.ie.contextmodeller.util.ModelUtils;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
@@ -55,10 +56,18 @@ public class ContextAggregationPropertyPage implements IPropertyContent {
 	@Override
 	public void update(ModelElement element, IModulePropertyTable table) {
 
-		table.addProperty("Aggregation Operator",
-				ModelUtils.getTaggedValue("Aggr_type", element));
-		table.addProperty("Aggregation Temporal Constraints",
+		table.addProperty(I18nMessageService.getString("UI.ContextAggregation.Property.operator"),
+				ModelUtils.getTaggedValue("Aggr_type", element),
+				new String[] {
+						I18nMessageService.getString("UI.ContextAggregation.Property.and"),
+						I18nMessageService.getString("UI.ContextAggregation.Property.or")
+				});
+
+
+		table.addProperty(I18nMessageService.getString("UI.ContextAggregation.Property.temporal"),
 				ModelUtils.getTaggedValue("Aggr_temporal", element));
+		table.addProperty(I18nMessageService.getString("UI.ContextAggregation.Property.negation"),
+				Boolean.parseBoolean(ModelUtils.getTaggedValue("Aggr_negation", element)));
 
 	}
 

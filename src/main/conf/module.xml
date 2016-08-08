@@ -6,7 +6,7 @@
     </ClassPath>
     <Profiles>
         <Profile uid="7d711df1-9dde-40b1-9755-b6d12139d078" id="cmodel.entities">
-            <Stereotype name="ContextModel" metaclass="ClassDiagram" is-hidden="false" label="Context Model Stereotype" uid="1bcf9704-3d0c-4634-bb06-cb178cffc8f3">
+            <Stereotype name="ContextModel" metaclass="StaticDiagram" is-hidden="false" label="Context Model Stereotype" uid="1bcf9704-3d0c-4634-bb06-cb178cffc8f3">
                 <Icon path="res/icons/Sterotype2_16.png"/>
                 <Image path="res/icons/Sterotype2_16.png"/>
                 <TagTypes/>
@@ -51,6 +51,7 @@
                 <TagTypes>
                     <TagType name="Aggr_type" uid="de33f8a3-95e7-4711-b7bf-a096d2253637" label="type" parameter-card="1" is-hidden="true" is-signed="false"/>
                     <TagType name="Aggr_temporal" uid="13f8e867-c727-4959-b95c-36672cfaf48d" label="temporal" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Aggr_negation" uid="a1049c91-ca56-4635-8cc3-4cc510848cbc" label="negation" parameter-card="1" is-hidden="true" is-signed="false"/>
                 </TagTypes>
             </Stereotype>
             <MetaclassReference uid="f1bdba4f-9c37-41fd-8a71-3876a40a92a5" metaclass="ModelElement">
@@ -75,25 +76,25 @@
                 </Handler>
             </Command>
             <Command id="ExportCSPARQL" label="%ExportCSPARQL.label" tooltip="%ExportCSPARQL.tooltip" image="res/icons/HelloWorldCommand_16.png" group="%Actions.group" modify-model="true" group-image="">
-                <Handler class="uk.ac.mdx.ie.contextmodeller.command.ExportToCSPARQLCommand"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.menu.export.ExportToCSPARQL"/>
             </Command>
             <Command id="ExportUPPAAL" label="%ExportUPPAAL.label" tooltip="%ExportUPPAAL.tooltip" image="res/icons/uppaal_16.png" group="%Actions.group" modify-model="true" group-image="">
-                <Handler class="uk.ac.mdx.ie.contextmodeller.command.ExportToUPPAALCommand"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.menu.export.ExportToUPPAAL"/>
             </Command>
             <Command id="ContextSourceCommand" label="%ContextSource.label" tooltip="%ContextSource.tooltip" image="res/icons/source_16.png" group="%Elements.group" modify-model="true" group-image="">
                 <Scope metaclass="Package"/>
                 <Scope metaclass="Class"/>
-                <Handler class="uk.ac.mdx.ie.contextmodeller.command.explorer.ContextSourceExplorerCommand"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.menu.element.NewContextSource"/>
             </Command>
             <Command id="ContextRuleCommand" label="%ContextRule.label" tooltip="%ContextRule.tooltip" image="res/icons/rule_16.png" group="%Elements.group" modify-model="true" group-image="">
                 <Scope metaclass="Package"/>
                 <Scope metaclass="Class"/>
-                <Handler class="uk.ac.mdx.ie.contextmodeller.command.explorer.ContextRuleExplorerCommand"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.menu.element.NewContextRule"/>
             </Command>
             <Command id="ContextStateCommand" label="%ContextState.label" tooltip="%ContextState.tooltip" image="res/icons/state_16.png" group="%Elements.group" modify-model="true" group-image="">
                 <Scope metaclass="Package"/>
                 <Scope metaclass="Class"/>
-                <Handler class="uk.ac.mdx.ie.contextmodeller.command.explorer.ContextStateExplorerCommand"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.menu.element.NewContextState"/>
             </Command>
         </Commands>
         <Tools>

@@ -19,6 +19,7 @@ package uk.ac.mdx.ie.contextmodeller.propertypage;
 import org.modelio.api.module.propertiesPage.IModulePropertyTable;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 
+import uk.ac.mdx.ie.contextmodeller.i18n.I18nMessageService;
 import uk.ac.mdx.ie.contextmodeller.util.ModelUtils;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
@@ -41,9 +42,9 @@ public class ContextSourcePropertyPage implements IPropertyContent {
 	@Override
 	public void update(ModelElement element, IModulePropertyTable table) {
 
-		table.addProperty("Ont",
+		table.addProperty(I18nMessageService.getString("UI.ContextSource.Property.Ont"),
 				ModelUtils.getTaggedValue("Source_ont", element));
-		table.addProperty("Data",
+		table.addProperty(I18nMessageService.getString("UI.ContextSource.Property.Data"),
 				ModelUtils.getTaggedValue("Source_data", element));
 
 	}
