@@ -6,7 +6,7 @@
     </ClassPath>
     <Profiles>
         <Profile uid="7d711df1-9dde-40b1-9755-b6d12139d078" id="cmodel.entities">
-            <Stereotype name="ContextModel" metaclass="StaticDiagram" is-hidden="false" label="Context Model Stereotype" uid="1bcf9704-3d0c-4634-bb06-cb178cffc8f3">
+            <Stereotype name="ContextModel" metaclass="ClassDiagram" is-hidden="false" label="Context Model Stereotype" uid="1bcf9704-3d0c-4634-bb06-cb178cffc8f3">
                 <Icon path="res/icons/Sterotype2_16.png"/>
                 <Image path="res/icons/Sterotype2_16.png"/>
                 <TagTypes/>
@@ -70,9 +70,9 @@
         <Commands>
             <Command id="ContextModelDiagram" label="%ContextModelTool.label" tooltip="%ContextModelTool.tooltip" image="res/icons/HelloWorldCommand_16.png" group="%Diagrams.group" modify-model="true" group-image="">
                 <Scope metaclass="ModelTree"/>
-                <Handler class="GenericElementCreationHandler">
-                    <HParameter name="metaclass" value="ClassDiagram"/>
+                <Handler class="uk.ac.mdx.ie.contextmodeller.command.menu.diagram.NewContextDiagram">
                     <HParameter name="stereotype" value="ContextModel"/>
+                    <HParameter name="metaclass" value="ClassDiagram"/>
                 </Handler>
             </Command>
             <Command id="ExportCSPARQL" label="%ExportCSPARQL.label" tooltip="%ExportCSPARQL.tooltip" image="res/icons/HelloWorldCommand_16.png" group="%Actions.group" modify-model="true" group-image="">

@@ -44,7 +44,7 @@ public class CMFactory {
 
 		if (element != null) {
 			StaticDiagram diagram;
-			diagram = session.getModel().createStaticDiagram(name, (ModelElement) element, stereotype);
+			diagram = session.getModel().createClassDiagram(name, (ModelElement) element, stereotype);
 			Utils.setUMLFreeName(diagram, Utils.CONTEXT_MODEL);
 			return diagram;
 
