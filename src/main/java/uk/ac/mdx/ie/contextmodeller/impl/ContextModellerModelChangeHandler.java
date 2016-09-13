@@ -33,6 +33,7 @@ import org.modelio.metamodel.uml.infrastructure.TaggedValue;
 import org.modelio.metamodel.uml.statik.Association;
 import org.modelio.metamodel.uml.statik.AssociationEnd;
 import org.modelio.metamodel.uml.statik.Class;
+import org.modelio.metamodel.uml.statik.Classifier;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
 import uk.ac.mdx.ie.contextmodeller.util.ModelUtils;
@@ -208,14 +209,43 @@ public class ContextModellerModelChangeHandler implements IModelChangeHandler {
 	private static void updateContextStateRelationships(
 			Association stateRelationship) {
 
+		EList<AssociationEnd> newAssEnds = stateRelationship.getEnd();
+
+		Classifier target = newAssEnds.get(0).getOppositeOwner().getOppositeOwner().getTarget();
+
+		EList<AssociationEnd> targetAssEnds = target.getTargetingEnd();
+
+		String existAggType = "";
+		for (AssociationEnd targetAssEnd : targetAssEnds) {
+			Association association = targetAssEnd.getAssociation();
+
+			if (association != stateRelationship) {
+				existAggType = ModelUtils.getTaggedValue("Aggr_type",
+						association);
+			}
+		}
+
 		String aggType = ModelUtils.getTaggedValue("Aggr_type",
 				stateRelationship);
 
-		if (aggType.isEmpty()) {
-			aggType = "AND";
-			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_type",
-					aggType, stateRelationship);
+		if (existAggType.isEmpty()) {
+			if (aggType.isEmpty()) {
+				aggType = "AND";
+			}
+		} else {
+			if (! aggType.isEmpty()) {
+
+				if (! aggType.equals(existAggType)) {
+					MessageDialog.openError(new Shell(), "Error",
+							"Only a single aggregation operator permittable");
+				}
+			}
+
+			aggType = existAggType;
 		}
+
+		ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_type",
+				aggType, stateRelationship);
 
 		stateRelationship.setName(aggType);
 	}
