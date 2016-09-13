@@ -108,22 +108,16 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 				if (assocType == 1) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_SR_ASSOCIATION);
-					endSource.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_SR_ASSOCIATION);
-					endTarget.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_SR_ASSOCIATION);
 
 					name = "\n Every: \nFor: \n ";
 				} else if (assocType == 2) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_RS_ASSOCIATION);
-					endSource.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_RS_ASSOCIATION);
-					endTarget.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_RS_ASSOCIATION);
 
 					endMulMin = "Rule Undefined";
 				} else if (assocType == 3) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_SS_ASSOCIATION);
-					endSource.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_SS_ASSOCIATION);
-					endTarget.addStereotype(Utils.CONTEXT_MODELLER, Utils.CONTEXT_SS_ASSOCIATION);
 
 					name = "AND";
 					ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_type",
