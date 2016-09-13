@@ -76,16 +76,30 @@ public class CSPARQLWriter extends AbstractModelWriter {
 				String nodeType = ModelUtils.getTaggedValue("Aggr_type", end);
 				String nodeTypeStr = "and";
 
-				if (nodeType.equalsIgnoreCase("not")) {
-					nodeTypeStr = "not";
+				if (nodeType.equalsIgnoreCase("OR")) {
+					nodeTypeStr = "or";
 				}
 
-
 				result.append(nodeTypeStr);
+				result.append(" ");
+
+			}
+
+			if (Boolean.parseBoolean(ModelUtils.getTaggedValue("Aggr_negation", end))) {
+				result.append("not");
 				result.append(" ");
 			}
 
 			result.append(literal.getName());
+
+			String temporal = ModelUtils.getTaggedValue("Aggr_temporal", end);
+
+			if (! temporal.isEmpty()) {
+				result.append("[");
+				result.append(temporal);
+				result.append("]");
+			}
+
 			result.append(" ");
 		}
 

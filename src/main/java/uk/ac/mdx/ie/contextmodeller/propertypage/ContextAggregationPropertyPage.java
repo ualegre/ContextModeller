@@ -28,27 +28,17 @@ public class ContextAggregationPropertyPage implements IPropertyContent {
 	@Override
 	public void changeProperty(ModelElement element, int row, String value) {
 
-		/*MObject e = element;
+		switch(row) {
 
-		List<Classifier> parent = (List<Classifier>) e.getCompositionOwner().getCompositionOwner().getCompositionOwner().getCompositionChildren();
+		case 1: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_type", value, element);
+				break;
 
-		for (Classifier p : parent) {
-			if (p.isStereotyped(Utils.CONTEXT_MODELLER,
-							Utils.CONTEXT_MODEL)) {
-				List<MObject> obs = (List<MObject>) p.getCompositionChildren();
-				System.out.println(obs);
-			}
+		case 2: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_temporal", value, element);
+				break;
 
-		}*/
+		case 3: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_negation", value, element);
+				break;
 
-		if (row == 1) {
-			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_type", value,
-					element);
-		}
-
-		if (row == 2) {
-			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Aggr_temporal", value,
-					element);
 		}
 
 	}
