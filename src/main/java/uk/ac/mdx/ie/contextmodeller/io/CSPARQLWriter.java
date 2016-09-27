@@ -157,8 +157,22 @@ public class CSPARQLWriter extends AbstractModelWriter {
 			return;
 		}
 
+		String[] stateSegments = relatedState.getName().split("_");
 
-		result.append("REGISTER QUERY " + relatedState.getName() + "_query AS ");
+		StringBuilder queryName = new StringBuilder();
+
+		for (String nameSegment : stateSegments) {
+			nameSegment.toLowerCase();
+			queryName.append(nameSegment.substring(0, 1).toUpperCase());
+			queryName.append(nameSegment.substring(1));
+		}
+
+		queryName.append("Query");
+
+		result.append("REGISTER QUERY ");
+		result.append(queryName);
+		result.append(" AS ");
+
 		result.append(System.lineSeparator());
 
 		generateCSPARQLPrefixes(result, relatedSources);
