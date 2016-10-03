@@ -31,6 +31,9 @@ public class ContextStateGroup {
 
 
 	public ContextStateGroup(boolean atomic, String groupname, int number) {
+
+		isAtomic = atomic;
+
 		mStates = new HashMap<String, String>();
 		mTransitions = new ArrayList<StateTransition>();
 		groupname = groupname.toLowerCase();
