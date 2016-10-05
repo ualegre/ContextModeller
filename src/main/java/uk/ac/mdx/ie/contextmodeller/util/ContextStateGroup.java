@@ -19,6 +19,7 @@ package uk.ac.mdx.ie.contextmodeller.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ContextStateGroup {
 
@@ -28,9 +29,10 @@ public class ContextStateGroup {
 	public String mGroupName;
 	public String mInstanceName;
 	public boolean isAtomic;
+	public String mInit;
 
 
-	public ContextStateGroup(boolean atomic, String groupname, int number) {
+	public ContextStateGroup(boolean atomic, String groupname, int varnumber) {
 
 		isAtomic = atomic;
 
@@ -43,30 +45,32 @@ public class ContextStateGroup {
 		mGroupName += groupname.substring(1);
 
 		mInstanceName = mGroupName + "Instance";
-		mStateVariable = groupname.substring(0, 1).toLowerCase() + String.valueOf(number);
+		mStateVariable = "c" + String.valueOf(varnumber);
 	}
 
 
-	public void addContextState(String stateName) {
-		int size = mStates.size();
+	public void addContextState(String stateName, int number) {
 
-		String id = "id" + String.valueOf(size);
+		String id = "id" + String.valueOf(number);
+
+		int size = mStates.size();
 
 		int i = 0;
 
-		for (String state : mStates.values()) {
+		for (Map.Entry<String, String> entry : mStates.entrySet()) {
 
-			String number = String.valueOf(i);
+			String varnumber = String.valueOf(i);
 
 			StateTransition trans = new StateTransition();
 
 			trans.source = id;
-			trans.target = "id" + number;
+			trans.target = entry.getValue();
 
-			if (i == 0) {
+			if (entry.getKey().equals("UNKNOWN")) {
 				trans.synch = "deactivate?";
 			} else {
-				trans.synch = "newData?newAtomicContext!";
+				//trans.synch = "newData?newAtomicContext!";
+				trans.synch = "newData?";
 			}
 
 			trans.assign = mStateVariable + " = " + number;
@@ -75,9 +79,10 @@ public class ContextStateGroup {
 
 			trans = new StateTransition();
 
-			trans.target = id;
-			trans.source = "id" + number;
-			trans.synch = "newData?newAtomicContext!";
+			trans.target = entry.getValue();
+			trans.source = id;
+			//trans.synch = "newData?newAtomicContext!";
+			trans.synch = "newData?";
 			trans.assign = mStateVariable + " = " + String.valueOf(size);
 
 			mTransitions.add(trans);

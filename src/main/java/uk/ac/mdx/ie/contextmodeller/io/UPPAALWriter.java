@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,9 +44,9 @@ import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
 public class UPPAALWriter extends AbstractModelWriter {
 
-	private HashMap<String, Set> mAtomicStateGroups = new HashMap<String, Set>();
-	private HashMap<String, Set> mAggregateStateGroups = new HashMap<String, Set>();
 	private HashMap<String, ContextStateGroup> mStateGroups = new HashMap<String, ContextStateGroup>();
+	private int uppaalConstructID = 2;
+	private int uppaalTemplateID = 2;
 
 
 	@Override
@@ -103,7 +102,6 @@ public class UPPAALWriter extends AbstractModelWriter {
 
 	private void generateContextStateGroup(List<MObject> elements, boolean isAtomic) {
 
-		int i = 1;
 
 		for (MObject ownedClass : elements) {
 
@@ -117,12 +115,16 @@ public class UPPAALWriter extends AbstractModelWriter {
 				ContextStateGroup contextStateGroup = mStateGroups.get(contextGroup);
 
 				if (contextStateGroup == null) {
-					contextStateGroup = new ContextStateGroup(isAtomic, contextGroup, i);
+					contextStateGroup = new ContextStateGroup(isAtomic, contextGroup, uppaalTemplateID);
 					mStateGroups.put(contextGroup, contextStateGroup);
+					contextStateGroup.addContextState("UNKNOWN", uppaalConstructID);
+					contextStateGroup.mInit = "id" + String.valueOf(uppaalConstructID);
+					uppaalConstructID++;
+					uppaalTemplateID++;
 				}
 
-				contextStateGroup.addContextState(contextState);
-				i++;
+				contextStateGroup.addContextState(contextState, uppaalConstructID);
+				uppaalConstructID++;
 			}
 
 		}
@@ -145,7 +147,7 @@ public class UPPAALWriter extends AbstractModelWriter {
 
 			Document doc = docBuilder.newDocument();
 			Element root = doc.createElement("nta");
-
+			doc.appendChild(root);
 
 			generateContextStateGroups();
 
@@ -159,6 +161,8 @@ public class UPPAALWriter extends AbstractModelWriter {
 
 			root.appendChild(addContextReceiver(doc));
 
+			generateTemplates(doc, root);
+
 			Element sys = doc.createElement("system");
 			sys.setTextContent(generateSystemDeclaration(null));
 			root.appendChild(sys);
@@ -169,12 +173,10 @@ public class UPPAALWriter extends AbstractModelWriter {
 			System.out.println(e.getMessage());
 		}
 
-		return writer.toString();
+		return writer.toString().replace("&#13;", " ");
 	}
 
 	private void generateTemplates(Document doc, Element root) {
-
-		int idIndex = 0;
 
 		for (ContextStateGroup group : mStateGroups.values()) {
 			Element template = doc.createElement("template");
@@ -186,7 +188,8 @@ public class UPPAALWriter extends AbstractModelWriter {
 			template.appendChild(name);
 
 			Element parameter = doc.createElement("parameter");
-			parameter.setTextContent("urgent chan &amp;newData, urgent chan &amp;deactivate, urgent chan &amp;newAtomicContext");
+			//parameter.setTextContent("urgent chan &newData, urgent chan &deactivate, urgent chan &newAtomicContext");
+			parameter.setTextContent("urgent chan &newData, urgent chan &deactivate");
 			template.appendChild(parameter);
 
 			for (Map.Entry<String, String> entry : group.mStates.entrySet()) {
@@ -201,12 +204,10 @@ public class UPPAALWriter extends AbstractModelWriter {
 				location.appendChild(name);
 				template.appendChild(location);
 
-				idIndex++;
-
 			}
 
 			Element init = doc.createElement("init");
-			init.setAttribute("ref", "id" + String.valueOf(idIndex));
+			init.setAttribute("ref", group.mInit);
 			template.appendChild(init);
 
 			for (StateTransition statechange : group.mTransitions) {
@@ -238,6 +239,8 @@ public class UPPAALWriter extends AbstractModelWriter {
 				template.appendChild(transition);
 
 			}
+
+			root.appendChild(template);
 
 		}
 	}
@@ -273,7 +276,7 @@ public class UPPAALWriter extends AbstractModelWriter {
 		contextReceiver.appendChild(name);
 
 		Element parameter = doc.createElement("parameter");
-		parameter.setTextContent("urgent chan &amp;newData, urgent chan &amp;deactivate");
+		parameter.setTextContent("urgent chan &newData, urgent chan &deactivate");
 		contextReceiver.appendChild(parameter);
 
 		Element declarations = addDeclaration(doc, "// Place local declarations here.");
@@ -441,8 +444,8 @@ public class UPPAALWriter extends AbstractModelWriter {
 		sb.append("urgent chan newData1;");
 		sb.append(System.lineSeparator());
 		sb.append("urgent chan deactivate1;");
-		sb.append(System.lineSeparator());
-		sb.append("urgent chan newAtomicContext1;");
+		//sb.append(System.lineSeparator());
+		//sb.append("urgent chan newAtomicContext1;");
 		sb.append(System.lineSeparator());
 		sb.append(System.lineSeparator());
 
@@ -458,19 +461,21 @@ public class UPPAALWriter extends AbstractModelWriter {
 			sb.append(group.mGroupName);
 
 			if (group.isAtomic) {
-				sb.append("(newData1, deactivate1, newAtomicContext1);");
+				//sb.append("(newData1, deactivate1, newAtomicContext1);");
+				sb.append("(newData1, deactivate1);");
 			} else {
-				sb.append("(newAtomicContext1);");
+				//sb.append("(newAtomicContext1);");
+				sb.append("(newData1, deactivate1);");
 			}
 
-			sb.append(System.lineSeparator());
+			sb.append("\n");
 		}
 
-		sb.append(System.lineSeparator());
+		sb.append("\n");
 
 		//Last instance list
 		sb.append("// List one or more processes to be composed into a system.");
-		sb.append(System.lineSeparator());
+		sb.append("\n");
 		sb.append("system Receiver,");
 
 		for (ContextStateGroup group : mStateGroups.values()) {
