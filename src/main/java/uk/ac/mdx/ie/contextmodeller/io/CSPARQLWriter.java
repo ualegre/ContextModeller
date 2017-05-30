@@ -38,7 +38,6 @@ public class CSPARQLWriter extends AbstractModelWriter {
 	@Override
 	public void write(Package model) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -100,7 +99,7 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		List<MObject> rules = new ArrayList<MObject>();
 
 
-		List<MObject> ownedClasses = (List<MObject>) model.getCompositionChildren();
+		List<? extends MObject> ownedClasses =  model.getCompositionChildren();
 
 		for (MObject ownedClass : ownedClasses) {
 
@@ -245,9 +244,6 @@ public class CSPARQLWriter extends AbstractModelWriter {
 				newSubqueryResult.append(index);
 				String subqueryResultText = newSubqueryResult.toString();
 				List<RDFTriple> queryRelatedTriples = new ArrayList<RDFTriple>();
-
-				//Map values to specific object variables
-				HashMap<String, String> methodTripleValueMap = new HashMap<>();
 
 				//Might have several value to variables
 				String[] methodTripleValues = methodTriplesValue.split(",");
@@ -434,7 +430,7 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		List<MObject> rules = new ArrayList<MObject>();
 
 
-		List<MObject> ownedClasses = (List<MObject>) model.getCompositionChildren();
+		List<? extends MObject> ownedClasses = model.getCompositionChildren();
 
 		for (MObject ownedClass : ownedClasses) {
 

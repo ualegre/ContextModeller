@@ -18,15 +18,15 @@ package uk.ac.mdx.ie.contextmodeller.propertypage;
 
 import java.util.List;
 
-import org.modelio.api.model.IMetamodelExtensions;
-import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IMetamodelExtensions;
 import org.modelio.api.module.propertiesPage.IModulePropertyTable;
-import org.modelio.metamodel.Metamodel;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 import org.modelio.metamodel.uml.infrastructure.Stereotype;
 import org.modelio.metamodel.uml.statik.Association;
 import org.modelio.metamodel.uml.statik.Class;
+import org.modelio.vcore.smkernel.mapi.MMetamodel;
 
+import uk.ac.mdx.ie.contextmodeller.impl.ContextModellerModule;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
 public class ContextModellerPropertyManager implements IPropertyContent {
@@ -74,22 +74,21 @@ public class ContextModellerPropertyManager implements IPropertyContent {
 	public static IPropertyContent getPropertyPage(Stereotype ster) {
 
 		IPropertyContent propertypage = null;
-		IMetamodelExtensions extensions = Modelio.getInstance()
-				.getModelingSession().getMetamodelExtensions();
-
+		IMetamodelExtensions extensions = ContextModellerModule.getInstance().getModuleContext().getModelingSession().getMetamodelExtensions();
+		MMetamodel metamodel = ContextModellerModule.getInstance().getModuleContext().getModelioServices().getMetamodelService().getMetamodel();
 		if (ster.equals(extensions.getStereotype(Utils.CONTEXT_MODELLER,
-				Utils.CONTEXT_SOURCE, Metamodel.getMClass(Class.class)))) {
+				Utils.CONTEXT_SOURCE, metamodel.getMClass(Class.class)))) {
 			propertypage = new ContextSourcePropertyPage();
 		} else if (ster.equals(extensions.getStereotype(Utils.CONTEXT_MODELLER,
-				Utils.CONTEXT_RULE, Metamodel.getMClass(Class.class)))) {
+				Utils.CONTEXT_RULE, metamodel.getMClass(Class.class)))) {
 			propertypage = new ContextRulePropertyPage();
 		} else if (ster.equals(extensions.getStereotype(Utils.CONTEXT_MODELLER,
 				Utils.CONTEXT_SS_ASSOCIATION,
-				Metamodel.getMClass(Association.class)))) {
+				metamodel.getMClass(Association.class)))) {
 			propertypage = new ContextAggregationPropertyPage();
 		} else if (ster.equals(extensions.getStereotype(Utils.CONTEXT_MODELLER,
 				Utils.CONTEXT_SR_ASSOCIATION,
-				Metamodel.getMClass(Association.class)))) {
+				metamodel.getMClass(Association.class)))) {
 			propertypage = new SourceRuleAssociationPropertyPage();
 		}
 

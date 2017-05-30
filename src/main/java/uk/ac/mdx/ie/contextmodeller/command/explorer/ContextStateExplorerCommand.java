@@ -18,16 +18,16 @@ package uk.ac.mdx.ie.contextmodeller.command.explorer;
 
 import java.util.List;
 
-import org.modelio.api.model.IModelingSession;
-import org.modelio.api.model.ITransaction;
-import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IModelingSession;
+import org.modelio.api.modelio.model.ITransaction;
 import org.modelio.api.module.IModule;
-import org.modelio.api.module.commands.DefaultModuleCommandHandler;
+import org.modelio.api.module.command.DefaultModuleCommandHandler;
 import org.modelio.metamodel.uml.infrastructure.Profile;
 import org.modelio.metamodel.uml.statik.Class;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
 import uk.ac.mdx.ie.contextmodeller.i18n.I18nMessageService;
+import uk.ac.mdx.ie.contextmodeller.impl.ContextModellerModule;
 import uk.ac.mdx.ie.contextmodeller.util.CMFactory;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
 
@@ -36,7 +36,7 @@ public class ContextStateExplorerCommand extends DefaultModuleCommandHandler {
 	@Override
 	public void actionPerformed(List<MObject> selectedElements, IModule module) {
 
-		IModelingSession session = Modelio.getInstance().getModelingSession();
+		IModelingSession session = ContextModellerModule.getInstance().getModuleContext().getModelingSession();
 		ITransaction transaction = session.createTransaction(I18nMessageService
 				.getString("Info.Session.Create", new String[] { "Activity" }));
 		Throwable localThrowable3 = null;

@@ -19,19 +19,19 @@ package uk.ac.mdx.ie.contextmodeller.command.diagram;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.modelio.api.diagram.IDiagramGraphic;
-import org.modelio.api.diagram.IDiagramHandle;
-import org.modelio.api.diagram.IDiagramNode;
-import org.modelio.api.diagram.tools.DefaultBoxTool;
-import org.modelio.api.model.IModelingSession;
-import org.modelio.api.model.ITransaction;
-import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.diagram.IDiagramGraphic;
+import org.modelio.api.modelio.diagram.IDiagramHandle;
+import org.modelio.api.modelio.diagram.IDiagramNode;
+import org.modelio.api.modelio.diagram.tools.DefaultBoxTool;
+import org.modelio.api.modelio.model.IModelingSession;
+import org.modelio.api.modelio.model.ITransaction;
 import org.modelio.metamodel.diagrams.AbstractDiagram;
 import org.modelio.metamodel.uml.infrastructure.Element;
 import org.modelio.metamodel.uml.statik.Package;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
 import uk.ac.mdx.ie.contextmodeller.i18n.I18nMessageService;
+import uk.ac.mdx.ie.contextmodeller.impl.ContextModellerModule;
 import uk.ac.mdx.ie.contextmodeller.util.CMFactory;
 
 public class ContextStateDiagramCommand extends DefaultBoxTool {
@@ -60,7 +60,7 @@ public class ContextStateDiagramCommand extends DefaultBoxTool {
 	public void actionPerformed(IDiagramHandle representation,
 			IDiagramGraphic target, Rectangle rect) {
 
-		IModelingSession session = Modelio.getInstance().getModelingSession();
+		IModelingSession session = ContextModellerModule.getInstance().getModuleContext().getModelingSession();
 		ITransaction transaction = session.createTransaction(I18nMessageService
 				.getString("Info.Session.Create", new String[] { "" }));
 		Throwable localThrowable3 = null;

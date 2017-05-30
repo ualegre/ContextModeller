@@ -19,8 +19,7 @@ package uk.ac.mdx.ie.contextmodeller.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelio.api.model.IUmlModel;
-import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IUmlModel;
 import org.modelio.metamodel.diagrams.StaticDiagram;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 import org.modelio.metamodel.uml.infrastructure.ModelTree;
@@ -28,6 +27,8 @@ import org.modelio.metamodel.uml.infrastructure.Stereotype;
 import org.modelio.metamodel.uml.statik.Class;
 import org.modelio.metamodel.uml.statik.Package;
 import org.modelio.vcore.smkernel.mapi.MObject;
+
+import uk.ac.mdx.ie.contextmodeller.impl.ContextModellerModule;
 
 public class Utils {
 
@@ -76,13 +77,13 @@ public class Utils {
 				|| (type == "InternalContextModelDiagram")
 				|| (type == "ParametricDiagram")) {
 			element = (ModelTree) parent;
-			children = new ArrayList(element.getProduct(StaticDiagram.class));
+			children = new ArrayList<ModelElement>(element.getProduct(StaticDiagram.class));
 		} else if (type == "View") {
 			element = (ModelTree) parent;
-			children = new ArrayList(element.getOwnedElement(Package.class));
+			children = new ArrayList<ModelElement>(element.getOwnedElement(Package.class));
 		} else if ((type == "ContextSourceStereotype")) {
 			element = (ModelTree) parent;
-			children = new ArrayList(element.getOwnedElement(Class.class));
+			children = new ArrayList<ModelElement>(element.getOwnedElement(Class.class));
 		}
 
 		if (children != null) {
@@ -98,7 +99,7 @@ public class Utils {
 	}
 
 	public static boolean accept(MObject selectedElement) {
-		IUmlModel model = Modelio.getInstance().getModelingSession().getModel();
+		IUmlModel model = ContextModellerModule.getInstance().getModuleContext().getModelingSession().getModel();
 
 		for (MObject libRoot : model.getLibraryRoots()) {
 			if (selectedElement.equals(libRoot)) {
@@ -117,7 +118,7 @@ public class Utils {
 	}
 
 	public static List<Stereotype> computePropertyList(ModelElement element) {
-		List result = new ArrayList();
+		List<Stereotype> result = new ArrayList<Stereotype>();
 		int i = 0;
 
 		for (Stereotype ster : element.getExtension()) {

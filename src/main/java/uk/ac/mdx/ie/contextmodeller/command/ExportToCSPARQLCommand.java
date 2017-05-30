@@ -23,16 +23,14 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
-import org.modelio.api.log.ILogService;
-import org.modelio.api.model.IModelingSession;
-import org.modelio.api.modelio.Modelio;
 import org.modelio.api.module.IModule;
-import org.modelio.api.module.IModuleUserConfiguration;
-import org.modelio.api.module.commands.DefaultModuleCommandHandler;
+import org.modelio.api.module.command.DefaultModuleCommandHandler;
+import org.modelio.api.module.context.log.ILogService;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 import org.modelio.metamodel.uml.statik.Package;
 import org.modelio.vcore.smkernel.mapi.MObject;
 
+import uk.ac.mdx.ie.contextmodeller.impl.ContextModellerModule;
 import uk.ac.mdx.ie.contextmodeller.io.AbstractModelWriter;
 import uk.ac.mdx.ie.contextmodeller.io.CSPARQLWriter;
 import uk.ac.mdx.ie.contextmodeller.util.Utils;
@@ -55,7 +53,7 @@ public class ExportToCSPARQLCommand extends DefaultModuleCommandHandler {
 	public ExportToCSPARQLCommand() {
 		super();
 		// services logs
-		this.logService = Modelio.getInstance().getLogService();
+		this.logService = ContextModellerModule.getInstance().getModuleContext().getModelioServices().getLogService();
 	}
 
 	/**
@@ -76,11 +74,7 @@ public class ExportToCSPARQLCommand extends DefaultModuleCommandHandler {
 	public void actionPerformed(List<MObject> selectedElements, IModule module) {
 
 		this.logService
-				.info(module, "HelloWorldCommand - actionPerformed(...)");
-
-		IModelingSession session = Modelio.getInstance().getModelingSession();
-		List<MObject> root = session.getModel().getModelRoots();
-		IModuleUserConfiguration configuration = module.getConfiguration();
+				.info("HelloWorldCommand - actionPerformed(...)");
 
 		ModelElement modelelt = (ModelElement) selectedElements.get(0);
 		// MessageDialog.openInformation(null, "Hello", modelelt.getName());

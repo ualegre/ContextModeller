@@ -22,10 +22,9 @@ import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.modelio.api.model.IModelingSession;
-import org.modelio.api.model.change.IModelChangeEvent;
-import org.modelio.api.model.change.IModelChangeHandler;
-import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IModelingSession;
+import org.modelio.api.modelio.model.event.IModelChangeEvent;
+import org.modelio.api.modelio.model.event.IModelChangeHandler;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 import org.modelio.metamodel.uml.infrastructure.Note;
 import org.modelio.metamodel.uml.infrastructure.TagParameter;
@@ -44,9 +43,6 @@ public class ContextModellerModelChangeHandler implements IModelChangeHandler {
 	@Override
 	public void handleModelChange(IModelingSession session,
 			IModelChangeEvent event) {
-
-		IModelingSession coreSession = Modelio.getInstance()
-				.getModelingSession();
 
 		Set<MObject> addedElements = event.getCreationEvents();
 

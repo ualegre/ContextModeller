@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
-import org.modelio.api.model.IUmlModel;
-import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.model.IUmlModel;
 import org.modelio.metamodel.uml.infrastructure.Dependency;
 import org.modelio.metamodel.uml.infrastructure.ModelElement;
 import org.modelio.metamodel.uml.infrastructure.TagParameter;
@@ -55,7 +54,7 @@ public class ModelUtils {
 
 		if (!exist) {
 			try {
-				TaggedValue v = Modelio.getInstance().getModelingSession()
+				TaggedValue v = ContextModellerModule.getInstance().getModuleContext().getModelingSession()
 						.getModel()
 						.createTaggedValue(modulename, name, element);
 				element.getTag().add(v);
@@ -110,14 +109,14 @@ public class ModelUtils {
 	public static void setTaggedValue(String name, ModelElement elt,
 			String value) {
 		EList<TaggedValue> tagElements = elt.getTag();
-		IUmlModel model = Modelio.getInstance().getModelingSession().getModel();
+		IUmlModel model = ContextModellerModule.getInstance().getModuleContext().getModelingSession().getModel();
 
 		if (!tagElements.isEmpty()) {
 			for (TaggedValue tag : tagElements) {
 				String tagname = tag.getDefinition().getName();
 				if (tagname.equals(name)) {
 					TagParameter firstElt = null;
-					List actuals = tag.getActual();
+					List<TagParameter> actuals = tag.getActual();
 					if ((actuals != null) && (actuals.size() > 0)) {
 						firstElt = (TagParameter) actuals.get(0);
 					} else {
@@ -140,8 +139,8 @@ public class ModelUtils {
 	public static void setTaggedValue(TaggedValue tvFound, ModelElement elt,
 			String value, ModelElement related, String modulelink,
 			String stereotypeLink) {
-		IUmlModel model = Modelio.getInstance().getModelingSession().getModel();
-		ArrayList<Dependency> linksList = new ArrayList(
+		IUmlModel model = ContextModellerModule.getInstance().getModuleContext().getModelingSession().getModel();
+		ArrayList<Dependency> linksList = new ArrayList<Dependency>(
 				elt.getDependsOnDependency());
 		for (Dependency existingLinks : linksList) {
 			if (existingLinks.isStereotyped(modulelink, stereotypeLink)) {

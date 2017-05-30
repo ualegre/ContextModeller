@@ -18,16 +18,15 @@ package uk.ac.mdx.ie.contextmodeller.command.diagram;
 
 import java.util.List;
 
-import org.modelio.api.diagram.IDiagramGraphic;
-import org.modelio.api.diagram.IDiagramHandle;
-import org.modelio.api.diagram.IDiagramLink;
-import org.modelio.api.diagram.ILinkPath;
-import org.modelio.api.diagram.InvalidSourcePointException;
-import org.modelio.api.diagram.tools.DefaultLinkTool;
-import org.modelio.api.model.IModelingSession;
-import org.modelio.api.model.ITransaction;
-import org.modelio.api.model.IUmlModel;
-import org.modelio.api.modelio.Modelio;
+import org.modelio.api.modelio.diagram.IDiagramGraphic;
+import org.modelio.api.modelio.diagram.IDiagramHandle;
+import org.modelio.api.modelio.diagram.IDiagramLink;
+import org.modelio.api.modelio.diagram.ILinkPath;
+import org.modelio.api.modelio.diagram.InvalidSourcePointException;
+import org.modelio.api.modelio.diagram.tools.DefaultLinkTool;
+import org.modelio.api.modelio.model.IModelingSession;
+import org.modelio.api.modelio.model.ITransaction;
+import org.modelio.api.modelio.model.IUmlModel;
 import org.modelio.metamodel.uml.statik.Association;
 import org.modelio.metamodel.uml.statik.AssociationEnd;
 import org.modelio.metamodel.uml.statik.Classifier;
@@ -60,7 +59,7 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 	public void actionPerformed(IDiagramHandle representation,
 			IDiagramGraphic source, IDiagramGraphic destination,
 			IDiagramLink.LinkRouterKind kind, ILinkPath path) {
-		IModelingSession session = Modelio.getInstance().getModelingSession();
+		IModelingSession session = ContextModellerModule.getInstance().getModuleContext().getModelingSession();
 		IUmlModel model = session.getModel();
 		try {
 			ITransaction transaction = session

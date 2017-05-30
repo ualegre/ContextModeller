@@ -16,10 +16,11 @@
 
 package uk.ac.mdx.ie.contextmodeller.util;
 
-import org.modelio.api.modelio.Modelio;
 import org.modelio.metamodel.uml.statik.Class;
 import org.modelio.metamodel.uml.statik.Package;
 import org.modelio.vcore.smkernel.mapi.MObject;
+
+import uk.ac.mdx.ie.contextmodeller.impl.ContextModellerModule;
 
 public class CMFactory {
 
@@ -38,9 +39,7 @@ public class CMFactory {
 	private static Class createAndAddSource(Class owner) {
 
 		try {
-			Class result = Modelio
-					.getInstance()
-					.getModelingSession()
+			Class result = ContextModellerModule.getInstance().getModuleContext().getModelingSession()
 					.getModel()
 					.createClass("", owner, Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_SOURCE);
@@ -57,9 +56,7 @@ public class CMFactory {
 	private static Class createAndAddSource(Package owner) {
 
 		try {
-			Class result = Modelio
-					.getInstance()
-					.getModelingSession()
+			Class result = ContextModellerModule.getInstance().getModuleContext().getModelingSession()
 					.getModel()
 					.createClass("", owner, Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_SOURCE);
@@ -75,9 +72,7 @@ public class CMFactory {
 	public static Class createAndAddRule(Package owner) {
 
 		try {
-			Class result = Modelio
-					.getInstance()
-					.getModelingSession()
+			Class result = ContextModellerModule.getInstance().getModuleContext().getModelingSession()
 					.getModel()
 					.createClass("", owner, Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_RULE);
@@ -92,9 +87,7 @@ public class CMFactory {
 
 	public static Class createAndAddState(Package element) {
 		try {
-			Class result = Modelio
-					.getInstance()
-					.getModelingSession()
+			Class result = ContextModellerModule.getInstance().getModuleContext().getModelingSession()
 					.getModel()
 					.createClass(Utils.CONTEXT_STATE, element,
 							Utils.CONTEXT_MODELLER, Utils.CONTEXT_STATE);
