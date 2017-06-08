@@ -96,11 +96,10 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 						assocType = 3;
 					}
 				}
-
-				Association association = model.createAssociation();
+				
+				Association association = model.createAssociation(c_source, c_destination, "");
 
 				String name = "";
-				String endMulMin = "";
 
 				if (assocType == 1) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
@@ -111,7 +110,6 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_RS_ASSOCIATION);
 
-					endMulMin = "Rule Undefined";
 				} else if (assocType == 3) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_SS_ASSOCIATION);
@@ -122,26 +120,8 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 				}
 
 				association.setName(name);
-
-				AssociationEnd endSource = model.createAssociationEnd();
-				// endSource.setName(c_destination.getName().toLowerCase());
-				endSource.setMultiplicityMin("");
-				endSource.setMultiplicityMax("");
-				endSource.setSource(c_source);
-				endSource.setTarget(c_destination);
-
-				AssociationEnd endTarget = model.createAssociationEnd();
-				endTarget.setMultiplicityMin(endMulMin);
-				endTarget.setMultiplicityMax("");
-
-				association.getEnd().add(endSource);
-				association.getEnd().add(endTarget);
-
-				endSource.setOpposite(endTarget);
-				endTarget.setOpposite(endSource);
-
-				endSource.setNavigable(true);
-				endTarget.setNavigable(false);
+				
+			
 
 				List<IDiagramGraphic> graphics = representation.unmask(
 						association, 0, 0);
