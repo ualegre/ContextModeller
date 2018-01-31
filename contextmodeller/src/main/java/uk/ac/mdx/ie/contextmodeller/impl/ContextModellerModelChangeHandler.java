@@ -89,18 +89,25 @@ public class ContextModellerModelChangeHandler implements IModelChangeHandler {
 	}
 
 	private static void updateContextSourceRelationships(Association element) {
-
+		String astream= ModelUtils.getTaggedValue("SR_stream", element);
 		String aevery = ModelUtils.getTaggedValue("SR_every", element);
 		String afor = ModelUtils.getTaggedValue("SR_for", element);
 
 		StringBuilder value = new StringBuilder();
 
-		value.append("Every: ");
-		value.append(aevery + "\n");
+		if (! astream.isEmpty()) {
+			value.append("Stream: ");
+			value.append(astream + "\n");
+		}
+		if (! aevery.isEmpty()) {
+			value.append("Every: ");
+			value.append(aevery + "\n");
+		}
 		if (! afor.isEmpty()) {
 			value.append("For: ");
 			value.append(afor);
 		}
+
 
 		element.setName(value.toString());
 

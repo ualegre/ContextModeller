@@ -28,8 +28,7 @@ public class ContextSourcePropertyPage implements IPropertyContent {
 	public void changeProperty(ModelElement element, int row, String value) {
 
 		if (row == 1) {
-			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Source_id", value,
-					element);
+			element.setName(value);
 		}
 		if (row == 2) {
 			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Source_ont", value,
@@ -44,9 +43,7 @@ public class ContextSourcePropertyPage implements IPropertyContent {
 
 	@Override
 	public void update(ModelElement element, IModulePropertyTable table) {
-
-		table.addProperty("OntId",
-				ModelUtils.getTaggedValue("Source_id", element));
+		table.addProperty("Name", element.getName());
 		table.addProperty("Ont",
 				ModelUtils.getTaggedValue("Source_ont", element));
 		table.addProperty("Data",

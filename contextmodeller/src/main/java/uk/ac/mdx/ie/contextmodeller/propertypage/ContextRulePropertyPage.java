@@ -28,35 +28,38 @@ public class ContextRulePropertyPage implements IPropertyContent {
 	public void changeProperty(ModelElement element, int row, String value) {
 
 		switch (row) {
-			case 1: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_logicalEvals",
+			case 1: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_predicate",
+					value, element);
+					break;
+			case 2: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_logicalEvals",
 					value, element);
 					break;
 
-			case 2: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_method1", value, element);
+			case 3: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_method1", value, element);
 					break;
 
-			case 3: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_triple1", value, element);
+			case 4: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_triple1", value, element);
 					break;
 
-			case 4: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_methodExpr1", value, element);
+			case 5: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_methodExpr1", value, element);
 					break;
 
-			case 5: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_method2", value, element);
+			case 6: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_method2", value, element);
 					break;
 
-			case 6: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_triple2", value, element);
+			case 7: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_triple2", value, element);
 					break;
 
-			case 7: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_methodExpr2", value, element);
+			case 8: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_methodExpr2", value, element);
 					break;
 
-			case 8: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_method3", value, element);
+			case 9: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_method3", value, element);
 					break;
 
-			case 9: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_triple3", value, element);
+			case 10: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_triple3", value, element);
 					break;
 
-			case 10: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_methodExpr3", value, element);
+			case 11: ModelUtils.addValue(Utils.CONTEXT_MODELLER, "Rule_methodExpr3", value, element);
 					break;
 		}
 
@@ -65,7 +68,8 @@ public class ContextRulePropertyPage implements IPropertyContent {
 	@Override
 	public void update(ModelElement element, IModulePropertyTable table) {
 
-		table.addProperty("Logical Evaluations",
+		table.addProperty("Predicate", ModelUtils.getTaggedValue("Rule_predicate",element));
+		table.addProperty("Filter",
 				ModelUtils.getTaggedValue("Rule_logicalEvals", element));
 
 		String method = "Rule_method";
@@ -73,6 +77,7 @@ public class ContextRulePropertyPage implements IPropertyContent {
 		String methodExpr = "Rule_methodExpr";
 
 		String f_method = ModelUtils.getTaggedValue("Rule_method1",element);
+		
 
 		table.addProperty("Method", f_method);
 		table.addProperty("Method Triple Var", ModelUtils.getTaggedValue("Rule_triple1",element));

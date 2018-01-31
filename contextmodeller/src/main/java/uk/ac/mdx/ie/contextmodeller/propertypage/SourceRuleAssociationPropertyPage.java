@@ -28,9 +28,13 @@ public class SourceRuleAssociationPropertyPage implements IPropertyContent {
 	public void changeProperty(ModelElement element, int row, String value) {
 
 		if (row == 1) {
+			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "SR_stream", value,
+					element);
+		}
+		if (row == 2) {
 			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "SR_every", value,
 					element);
-		} else if (row == 2) {
+		} else if (row == 3) {
 			ModelUtils.addValue(Utils.CONTEXT_MODELLER, "SR_for", value,
 					element);
 		}
@@ -40,6 +44,8 @@ public class SourceRuleAssociationPropertyPage implements IPropertyContent {
 	@Override
 	public void update(ModelElement element, IModulePropertyTable table) {
 
+		table.addProperty("Stream",
+				ModelUtils.getTaggedValue("SR_stream", element));
 		table.addProperty("Every",
 				ModelUtils.getTaggedValue("SR_every", element));
 		table.addProperty("For",
