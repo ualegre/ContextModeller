@@ -15,14 +15,16 @@
                 <Icon path="res/icons/source_16.png"/>
                 <Image path="res/icons/source_48.png"/>
                 <TagTypes>
-                    <TagType name="Source_ont" uid="78b5ba35-94de-4e59-95e2-900440a2896f" label="ont" parameter-card="1" is-hidden="true" is-signed="false"/>
-                    <TagType name="Source_data" uid="292bb52c-5f78-441f-bf26-3a0af92a1072" label="source" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Source_id" uid="77dacbe4-f277-47be-a2a3-b2858759dce3" label="OntId" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Source_ont" uid="78b5ba35-94de-4e59-95e2-900440a2896f" label="Ont" parameter-card="1" is-hidden="true" is-signed="false"/>
+                    <TagType name="Source_data" uid="292bb52c-5f78-441f-bf26-3a0af92a1072" label="Source" parameter-card="1" is-hidden="true" is-signed="false"/>
                 </TagTypes>
             </Stereotype>
             <Stereotype name="ContextRule" metaclass="Class" is-hidden="false" label="Context Rule Stereotype" uid="4447a2c1-c9ff-4b51-a7dd-3dde51bb77bf">
                 <Icon path="res/icons/rule_16.png"/>
                 <Image path="res/icons/rule_48.png"/>
                 <TagTypes>
+                    <TagType name="Rule_stream" uid="fef94302-fe89-4e74-ac52-075773e6b685" label="stream" parameter-card="1" is-hidden="true" is-signed="false"/>
                     <TagType name="Rule_method1" uid="67cdf0cb-cc6a-4dae-a2aa-2f3368e8e7bf" label="method1" parameter-card="1" is-hidden="true" is-signed="false"/>
                     <TagType name="Rule_triple1" uid="d05083ac-a74e-4ed3-a4c6-92f0da4a2999" label="triple1" parameter-card="1" is-hidden="true" is-signed="false"/>
                     <TagType name="Rule_methodExpr1" uid="155b6124-27bc-40c1-89ec-93666812b632" label="triple1" parameter-card="1" is-hidden="true" is-signed="false"/>
@@ -42,6 +44,7 @@
             </Stereotype>
             <Stereotype name="ContextSource-Rule-Association" metaclass="Association" is-hidden="false" label="Association" uid="3fa6458d-3406-4516-b695-5a6c14cbbde4">
                 <TagTypes>
+                    <TagType name="SR_stream" uid="f3fcbb8e-af25-485f-9fb7-99bb2691717c" label="every" parameter-card="1" is-hidden="true" is-signed="false"/>
                     <TagType name="SR_every" uid="fe5b8add-fe66-4135-a9d6-62583abe12a1" label="every" parameter-card="1" is-hidden="true" is-signed="false"/>
                     <TagType name="SR_for" uid="8d7e60a2-5c2e-4d24-876f-41d3028fc3c9" label="for" parameter-card="1" is-hidden="true" is-signed="false"/>
                 </TagTypes>

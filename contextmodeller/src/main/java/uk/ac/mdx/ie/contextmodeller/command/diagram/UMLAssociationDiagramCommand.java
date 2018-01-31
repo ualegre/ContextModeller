@@ -104,7 +104,7 @@ public class UMLAssociationDiagramCommand extends DefaultLinkTool {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_SR_ASSOCIATION);
 
-					name = "Every: \nFor: ";
+					name = "Stream: \nEvery: \nFor: ";
 				} else if (assocType == 2) {
 					association.addStereotype(Utils.CONTEXT_MODELLER,
 							Utils.CONTEXT_RS_ASSOCIATION);
