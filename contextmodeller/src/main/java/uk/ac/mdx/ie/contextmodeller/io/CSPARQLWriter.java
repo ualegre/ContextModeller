@@ -138,23 +138,22 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		relatedState = getRuleState(rule);
 
 		//We cannot proceed without a source and state
-		if (relatedSources.isEmpty() || relatedState == null) {
-			return;
-		}
+		if (relatedSources.isEmpty() || relatedState == null) return;
 
-
-		result.append("REGISTER QUERY " + relatedState.getName() + "_query AS ");
+		generateRegisterQuery(result, relatedState);
 		result.append(System.lineSeparator());
-
-		generateCSPARQLPrefixes(result, relatedSources);
-		String firstSourceName = relatedSources.get(0).getName();
-		result.append("CONSTRUCT { ex:" + firstSourceName.toLowerCase()
-				+ " <http://ie.cs.mdx.ac.uk/POSEIDON/context/is> \"" + relatedState.getName() + "\"} ");
+		generateCSPARQLPrefix(result, relatedSources);
 		result.append(System.lineSeparator());
-
-		result.append("FROM STREAM <http://poseidon-project.org/context-stream> [RANGE " + generateCSPARQLRange(rule) + "] ");
+		generateConstruct(result, rule, relatedSources, relatedState);
 		result.append(System.lineSeparator());
+		generateStream(result, rule);
+		result.append(System.lineSeparator());
+		generateWhereClause(result, rule, relatedSources);
+		result.append(System.lineSeparator());
+		
+	}
 
+	private static void generateWhereClause(StringBuilder result, MObject rule, List<MObject> relatedSources) {
 		result.append("WHERE { ");
 		result.append(System.lineSeparator());
 
@@ -176,8 +175,48 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		generateCSPARQLFilters(result, rule, subresexp);
 
 		result.append("}");
-		result.append(System.lineSeparator());
-		result.append(System.lineSeparator());
+	}
+	
+	private static void generateCSPARQLPrefix(StringBuilder result,
+			List<MObject> relatedSources) {
+
+		for (MObject relatedSource : relatedSources) {			
+				String prefix = ModelUtils.getTaggedValue("Source_ont", (ModelElement) relatedSource);
+	    		if (! prefix.isEmpty()) {
+	    			prefix = prefix.trim();
+	        		result.append("PREFIX ex:");
+	        		result.append(prefix);
+	        		result.append(" ");
+	        		result.append(System.lineSeparator());
+	    		}
+		}
+
+	}
+
+	private static void generateStream(StringBuilder result, MObject rule) {
+		
+		EList<AssociationEnd> ends = ((Class) rule).getTargetingEnd();
+		String stream = null;
+
+		for(AssociationEnd end : ends) {
+			Association rangeinfo = end.getAssociation();
+			stream = ModelUtils.getTaggedValue("SR_stream", rangeinfo);
+		}
+		result.append("FROM STREAM "+stream+" [RANGE " + generateCSPARQLRange(rule) + "] ");
+	}
+
+	private static void generateConstruct(StringBuilder result, MObject rule, List<MObject> relatedSources, MObject relatedState) {
+		if(relatedSources != null && !relatedSources.isEmpty() ){
+			String firstSourceName = relatedSources.get(0).getName();
+			
+			String predicate = ModelUtils.getTaggedValue("Rule_predicate", (ModelElement) rule);
+			result.append("CONSTRUCT { ex:" + firstSourceName.toLowerCase() +" "+predicate+" \"" + relatedState.getName() + "\"} ");
+			result.append(System.lineSeparator());
+		}
+	}
+
+	private static void generateRegisterQuery(StringBuilder result, MObject relatedState) {
+		result.append("REGISTER QUERY " + relatedState.getName() + "_query AS ");
 	}
 
     private static void generateCSPARQLFilters(StringBuilder result,
@@ -376,30 +415,6 @@ public class CSPARQLWriter extends AbstractModelWriter {
 		return result.toString();
 	}
 
-	private static void generateCSPARQLPrefixes(StringBuilder result,
-			List<MObject> relatedSources) {
-
-
-		for (MObject relatedSource : relatedSources) {
-
-			String prefixStrings = ModelUtils.getTaggedValue("Source_ont", (ModelElement) relatedSource);
-
-	    	String[] prefixes = prefixStrings.split(" . ");
-
-	    	for (String prefix : prefixes) {
-
-	    		if (! prefix.isEmpty()) {
-	    			prefix = prefix.trim();
-
-	        		result.append("PREFIX ");
-	        		result.append(prefix);
-	        		result.append(" ");
-	        		result.append(System.lineSeparator());
-	    		}
-	    	}
-		}
-
-	}
 
 	private static MObject getRuleState(MObject rule) {
 

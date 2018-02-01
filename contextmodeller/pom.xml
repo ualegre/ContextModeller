@@ -6,7 +6,7 @@
 	<!-- definition -->
 	<groupId>uk.ac.mdx.ie</groupId>
 	<artifactId>contextmodeller</artifactId>
-	<version>0.3.2</version>
+	<version>0.3.3</version>
 
 	<name>ContextModeller</name>
 

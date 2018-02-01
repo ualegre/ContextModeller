@@ -44,8 +44,7 @@ public class ContextModelCommand extends DefaultModuleCommandHandler {
 	public void actionPerformed(List<MObject> selectedElements, IModule module) {
 		IModelingSession session = ContextModellerModule.getInstance().getModuleContext().getModelingSession();
 		StaticDiagram diagram = null;
-		String name = I18nMessageService
-				.getString("Ui.Command.BlockDiagramExplorerCommand.Label");
+		String name = "ContextModellingDiagram";
 		try {
 			ITransaction transaction = session
 					.createTransaction(I18nMessageService.getString(

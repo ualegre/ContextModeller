@@ -68,8 +68,8 @@ public class ContextRulePropertyPage implements IPropertyContent {
 	@Override
 	public void update(ModelElement element, IModulePropertyTable table) {
 
-		table.addProperty("Predicate", ModelUtils.getTaggedValue("Rule_predicate",element));
-		table.addProperty("Filter",
+		table.addProperty("Rule Predicate", ModelUtils.getTaggedValue("Rule_predicate",element));
+		table.addProperty("Logical Eval",
 				ModelUtils.getTaggedValue("Rule_logicalEvals", element));
 
 		String method = "Rule_method";
